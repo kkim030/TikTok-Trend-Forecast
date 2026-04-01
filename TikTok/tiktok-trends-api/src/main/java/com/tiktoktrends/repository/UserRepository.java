@@ -11,5 +11,6 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
     Optional<User> findByTiktokHandle(String handle);
+    Optional<User> findByTiktokOpenId(String tiktokOpenId);
     boolean existsByEmail(String email);
 }

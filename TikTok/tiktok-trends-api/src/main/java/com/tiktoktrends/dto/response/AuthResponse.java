@@ -9,4 +9,6 @@ public class AuthResponse {
     private UUID userId;
     private String tiktokHandle;
     private String niche;
+    private String displayName;
+    private String avatarUrl;
 }
