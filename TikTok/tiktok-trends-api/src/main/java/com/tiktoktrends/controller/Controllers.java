@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 // ─── Trends Controller ────────────────────────────────────────────────────────
@@ -90,6 +91,23 @@ class RecommendationsController {
             @AuthenticationPrincipal UserDetails userDetails) {
         UUID userId = BaseController.extractUserId(userDetails);
         return ResponseEntity.ok(recommendationService.getRecentRecommendations(userId));
+    }
+}
+
+// ─── Ingestion Controller ────────────────────────────────────────────────────
+@RestController
+@RequestMapping("/api/v1/ingest")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
+class IngestionController {
+
+    private final com.tiktoktrends.scheduler.IngestionScheduler ingestionScheduler;
+
+    @PostMapping("/trigger")
+    public ResponseEntity<Map<String, String>> triggerIngestion() {
+        ingestionScheduler.ingestPublicTrends();
+        ingestionScheduler.snapshotUserPerformance();
+        return ResponseEntity.ok(Map.of("status", "Ingestion triggered successfully"));
     }
 }
 

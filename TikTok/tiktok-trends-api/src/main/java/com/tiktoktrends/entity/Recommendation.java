@@ -34,7 +34,7 @@ public class Recommendation {
     @Column(name = "suggested_music") private String suggestedMusic;
 
     @JdbcTypeCode(SqlTypes.ARRAY)
-    @Column(name = "suggested_hashtags", columnDefinition = "TEXT[]")
+    @Column(name = "suggested_hashtags")
     private List<String> suggestedHashtags;
 
     @Column(name = "confidence_score") private Double confidenceScore;
