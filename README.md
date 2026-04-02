@@ -134,12 +134,6 @@ npm run dev
 
 If you don't have a TikTok developer app set up, just use demo mode — it works without any TikTok credentials.
 
-**Setting up TikTok OAuth (optional)**
-1. Register at [developers.tiktok.com](https://developers.tiktok.com)
-2. Enable Login Kit, request scopes: `user.info.basic`, `user.info.profile`, `user.info.stats`, `video.list`
-3. Add redirect URI: `http://localhost:3000/auth/callback`
-4. Paste `client_key` and `client_secret` into your env vars
-
 ---
 
 ## API endpoints
