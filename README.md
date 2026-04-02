@@ -24,6 +24,36 @@ You sign in with your TikTok account (OAuth) so your real data gets pulled on lo
 
 ---
 
+## Quick start
+
+Make sure PostgreSQL and Redis are running, then:
+
+```bash
+# 1. Create the database
+psql -U postgres -c "CREATE DATABASE tiktok_trends;"
+
+# 2. Set your secrets
+export DB_PASSWORD=...
+export JWT_SECRET=...
+export ANTHROPIC_API_KEY=...
+export TIKTOK_CLIENT_KEY=...
+export TIKTOK_CLIENT_SECRET=...
+
+# 3. Start the backend (runs Flyway migrations automatically)
+cd tiktok-trends-api
+mvn spring-boot:run
+
+# 4. In a new terminal, start the frontend
+cd tiktok-trends-ui
+npm install && npm run dev
+```
+
+Open `http://localhost:3000` — click **Try Demo** to explore without a TikTok account, or **Sign in with TikTok** if you have a developer app configured.
+
+The backend API runs at `http://localhost:8080`. Swagger docs are at `http://localhost:8080/swagger-ui.html`.
+
+---
+
 ## Tech stack
 
 | | |
