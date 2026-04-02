@@ -2,6 +2,8 @@
 
 An AI-powered analytics platform for TikTok content creators. Connect your TikTok account to get real-time trend intelligence, performance benchmarks, and AI-generated video concepts tailored to your niche.
 
+![Landing Page](TikTok/docs/screenshots/landing.png)
+
 ---
 
 ## What It Does
@@ -31,6 +33,8 @@ Each trend row shows a **velocity bar** — a visual indicator of how fast the t
 
 No login required to browse trends.
 
+![Trends Dashboard](TikTok/docs/screenshots/trends.png)
+
 ---
 
 ### AI Video Concepts
@@ -48,6 +52,8 @@ Click **Generate New Concept** and the app:
    - **Confidence score** — how well this concept aligns with current trend data (color-coded: green ≥ 80%, yellow ≥ 60%, red below)
 
 Previous recommendations are saved and displayed below the generate button so you can track what you've been suggested over time.
+
+![AI Recommendations](TikTok/docs/screenshots/recommendations.png)
 
 ---
 
@@ -78,6 +84,8 @@ Switch between five metrics using the dropdown:
 Watch time is graded on an absolute scale (A ≥ 75%, B ≥ 60%, C ≥ 45%, D ≥ 30%) since it's not relative to a platform average.
 
 An **Overall** grade summarizes all five KPIs into a single letter grade. This is what you'd show a brand partnership manager.
+
+![Performance Analytics](TikTok/docs/screenshots/analytics.png)
 
 ---
 
