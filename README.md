@@ -48,9 +48,15 @@ cd tiktok-trends-ui
 npm install && npm run dev
 ```
 
-Open `http://localhost:3000` — click **Try Demo** to explore without a TikTok account, or **Sign in with TikTok** if you have a developer app configured.
+Once both are running:
 
-The backend API runs at `http://localhost:8080`. Swagger docs are at `http://localhost:8080/swagger-ui.html`.
+| | URL |
+|---|---|
+| **Frontend (app)** | http://localhost:3000 |
+| **Backend API** | http://localhost:8080 |
+| **Swagger / API docs** | http://localhost:8080/swagger-ui.html |
+
+Hit **Try Demo** on the landing page to explore the full app without a TikTok account — no credentials needed.
 
 ---
 
