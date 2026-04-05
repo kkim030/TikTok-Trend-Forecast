@@ -1,0 +1,622 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D27683B8AC37A31EC6F1D11 /* AutoInvestRuleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D97118F92BE2FE1DB77143 /* AutoInvestRuleRow.swift */; };
+		1229ADD3A95CC89CC80F5E3A /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3E2319A91FA891434BDCD7 /* AccountView.swift */; };
+		132D80B54DDA3687DD5F1738 /* AutoInvestSetupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A9887AFE46AC665B98959F /* AutoInvestSetupSheet.swift */; };
+		132F42DBB52447B29AC5BF96 /* RBCInvestingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C705AFF47CB3CC73E148D2B /* RBCInvestingApp.swift */; };
+		1E25F623EC4726E6D77C4457 /* PortfolioAllocationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA651B8788AC05BAE4222E6 /* PortfolioAllocationSection.swift */; };
+		45EC33EFD64757105DAD1643 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369F9F451FDC29C611B10391 /* TransactionsView.swift */; };
+		46DA54B55B961273B11BCF16 /* StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEC605C093548874D4356E9 /* StockChartView.swift */; };
+		472B90646BEF37E8DF9C7520 /* AutoInvestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56816EB8CD59E71BFD6A7F8C /* AutoInvestView.swift */; };
+		4A0DD388EBF42BA815C0C5A0 /* AutoInvestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB24A587D2C25325C1F151AB /* AutoInvestViewModel.swift */; };
+		4E136C06381749696ED6B038 /* QuickActionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A75D204C6E7582C1EC091A /* QuickActionsSheet.swift */; };
+		4F1F313340C0D7E9D31467DB /* TransfersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344B6DB58A5B111A913DB04C /* TransfersView.swift */; };
+		6FD6271F9D64124BCAAE9438 /* BankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52501C8F343862AF78503ADB /* BankingViewModel.swift */; };
+		7BA1C2FDF8DC51DA0D375874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F3DC75BEAC18FDD15DA445B /* Assets.xcassets */; };
+		87560B36DEA6901C1C08978A /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1459509573E58C7ECB888D8 /* WatchlistViewModel.swift */; };
+		88A501A4DDF6C11B4904C55D /* OrderEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1D2D9CFF2CEF9CCCF5CE67 /* OrderEntryView.swift */; };
+		8EB35E08A90BEDEBF29DF97F /* HoldingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347526631122EBEE9F6AFFD /* HoldingsView.swift */; };
+		90BD2FEF6BBFDB439B26790B /* GainLossText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A9CF2E3A6F24EF0C80DED /* GainLossText.swift */; };
+		9205FA57AE730F2E17F53784 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2939287182CAF426FB349C1 /* PortfolioViewModel.swift */; };
+		96020371D76228D04BDA6447 /* PieChartRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD95BB11AC40E8948A6C382 /* PieChartRepresentable.swift */; };
+		99D6DC72ECFA357C6911DC73 /* BankingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760444CEFFE4990D7613229D /* BankingDetailView.swift */; };
+		9E767EA6256E400AADFD80DA /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3110DCEFA9798CB15512A9A /* TransactionViewModel.swift */; };
+		9F1EB466B913B2A6CF8C32C8 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 15239A264BBD162BFA7E0EDF /* DGCharts */; };
+		9F8EA27B9DD24830140E7DEF /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A28167AA4DEA359B6A24C4 /* DashboardView.swift */; };
+		ACBD5AB0B3991CFAACF85179 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346F07BFDD0075E7300DDBFA /* Theme.swift */; };
+		B0B5D26CFBD4CC9CF25E8255 /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E6419346D911A87B477A7C /* MoreView.swift */; };
+		B6CA2E10B5AB1CBDE40861A1 /* WatchlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ABFAAB4CAB21760F2B963A /* WatchlistView.swift */; };
+		B8A806A7639A9F4E3E4F0BE4 /* FABButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E25B4EEC011104C66572AD /* FABButton.swift */; };
+		BB050233629378DB8BB11316 /* SliceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC6526847276C7518577A3 /* SliceDetailView.swift */; };
+		C3E2A046B1BBFE0BE21E6A1A /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54BE8B93D03711249B14F0 /* Models.swift */; };
+		C82182BAFA13674481B095F4 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7AEED943F8FB39184D12A3 /* MainTabView.swift */; };
+		C9B363860F18EF287DAC364F /* QuotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC61752069360B4BBD47B2D /* QuotesViewModel.swift */; };
+		D40E7E484760F2BC159B53DA /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15ABFE5E695ABED9F09AC85B /* APIService.swift */; };
+		E4C37510A8D6F50256F92D1F /* QuotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B8A62253AB7FCFA3D0EC1C /* QuotesView.swift */; };
+		E9D559E2F834974BC2B76004 /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E185C364B2504C3845B763 /* OrderViewModel.swift */; };
+		EDB57355BEC8A849CC6924F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE65FBE943D962E99575F603 /* LoginView.swift */; };
+		F78DA1CF8229F1B1D327CE3A /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339A20F80AC5C80EFDE75C4C /* AuthViewModel.swift */; };
+		FC18B628E56E6DA016245061 /* BankingAccountCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C830BF649B95A567818B4B /* BankingAccountCard.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0F3DC75BEAC18FDD15DA445B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0FA651B8788AC05BAE4222E6 /* PortfolioAllocationSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioAllocationSection.swift; sourceTree = "<group>"; };
+		15ABFE5E695ABED9F09AC85B /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		1A54BE8B93D03711249B14F0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		2C705AFF47CB3CC73E148D2B /* RBCInvestingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBCInvestingApp.swift; sourceTree = "<group>"; };
+		339A20F80AC5C80EFDE75C4C /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		344B6DB58A5B111A913DB04C /* TransfersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersView.swift; sourceTree = "<group>"; };
+		346F07BFDD0075E7300DDBFA /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		369F9F451FDC29C611B10391 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
+		52501C8F343862AF78503ADB /* BankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingViewModel.swift; sourceTree = "<group>"; };
+		52A28167AA4DEA359B6A24C4 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		54C830BF649B95A567818B4B /* BankingAccountCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingAccountCard.swift; sourceTree = "<group>"; };
+		56816EB8CD59E71BFD6A7F8C /* AutoInvestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInvestView.swift; sourceTree = "<group>"; };
+		5D9A9CF2E3A6F24EF0C80DED /* GainLossText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GainLossText.swift; sourceTree = "<group>"; };
+		60E21594CB5ADF7F38BE21F4 /* RBCInvesting.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RBCInvesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		64E25B4EEC011104C66572AD /* FABButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABButton.swift; sourceTree = "<group>"; };
+		73A75D204C6E7582C1EC091A /* QuickActionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionsSheet.swift; sourceTree = "<group>"; };
+		760444CEFFE4990D7613229D /* BankingDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingDetailView.swift; sourceTree = "<group>"; };
+		86E6419346D911A87B477A7C /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
+		8BEC605C093548874D4356E9 /* StockChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
+		8FD95BB11AC40E8948A6C382 /* PieChartRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRepresentable.swift; sourceTree = "<group>"; };
+		98B8A62253AB7FCFA3D0EC1C /* QuotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesView.swift; sourceTree = "<group>"; };
+		9AC61752069360B4BBD47B2D /* QuotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesViewModel.swift; sourceTree = "<group>"; };
+		9B7AEED943F8FB39184D12A3 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		A1459509573E58C7ECB888D8 /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
+		A3110DCEFA9798CB15512A9A /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
+		AE65FBE943D962E99575F603 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		AF1D2D9CFF2CEF9CCCF5CE67 /* OrderEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderEntryView.swift; sourceTree = "<group>"; };
+		BB24A587D2C25325C1F151AB /* AutoInvestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInvestViewModel.swift; sourceTree = "<group>"; };
+		BDCC6526847276C7518577A3 /* SliceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliceDetailView.swift; sourceTree = "<group>"; };
+		D6ABFAAB4CAB21760F2B963A /* WatchlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistView.swift; sourceTree = "<group>"; };
+		E0D97118F92BE2FE1DB77143 /* AutoInvestRuleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInvestRuleRow.swift; sourceTree = "<group>"; };
+		E9E185C364B2504C3845B763 /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
+		EF3E2319A91FA891434BDCD7 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		F2939287182CAF426FB349C1 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
+		F347526631122EBEE9F6AFFD /* HoldingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldingsView.swift; sourceTree = "<group>"; };
+		F3A9887AFE46AC665B98959F /* AutoInvestSetupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInvestSetupSheet.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B6A623FB63D49011C1FF8AA8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F1EB466B913B2A6CF8C32C8 /* DGCharts in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1229302BDB51D546D8243994 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				AE65FBE943D962E99575F603 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		1C9841D4BB53ACB14C8DE0E4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A54BE8B93D03711249B14F0 /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		28AC3B30AF5A45D104D1D804 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				369F9F451FDC29C611B10391 /* TransactionsView.swift */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		35472F3345A1F570E514CA09 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				346F07BFDD0075E7300DDBFA /* Theme.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3554D996F8569DBD36734EEE /* More */ = {
+			isa = PBXGroup;
+			children = (
+				86E6419346D911A87B477A7C /* MoreView.swift */,
+			);
+			path = More;
+			sourceTree = "<group>";
+		};
+		3EB3FE9F1291B7E5738D921A /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				54C830BF649B95A567818B4B /* BankingAccountCard.swift */,
+				760444CEFFE4990D7613229D /* BankingDetailView.swift */,
+				52A28167AA4DEA359B6A24C4 /* DashboardView.swift */,
+				0FA651B8788AC05BAE4222E6 /* PortfolioAllocationSection.swift */,
+				BDCC6526847276C7518577A3 /* SliceDetailView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		45FF8F5644AF33B668C0BEA5 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				8FD95BB11AC40E8948A6C382 /* PieChartRepresentable.swift */,
+				8BEC605C093548874D4356E9 /* StockChartView.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		4D97181B3BA19CDA6F7E5B05 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				15ABFE5E695ABED9F09AC85B /* APIService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		6E5638EF41C6F5BFB8E9CBFB /* Quotes */ = {
+			isa = PBXGroup;
+			children = (
+				98B8A62253AB7FCFA3D0EC1C /* QuotesView.swift */,
+			);
+			path = Quotes;
+			sourceTree = "<group>";
+		};
+		73D61A8DF3979AC183D6A006 /* Transfers */ = {
+			isa = PBXGroup;
+			children = (
+				E0D97118F92BE2FE1DB77143 /* AutoInvestRuleRow.swift */,
+				F3A9887AFE46AC665B98959F /* AutoInvestSetupSheet.swift */,
+				56816EB8CD59E71BFD6A7F8C /* AutoInvestView.swift */,
+				344B6DB58A5B111A913DB04C /* TransfersView.swift */,
+			);
+			path = Transfers;
+			sourceTree = "<group>";
+		};
+		836224F5E4C77B338B679A51 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CF5D3916ADAE55538FB5DABD /* Account */,
+				1229302BDB51D546D8243994 /* Auth */,
+				45FF8F5644AF33B668C0BEA5 /* Charts */,
+				ACB8CE6CECCC0FE6623A18DA /* Components */,
+				3EB3FE9F1291B7E5738D921A /* Dashboard */,
+				9EBBB52C9A5C3D29C4E468B6 /* Holdings */,
+				3554D996F8569DBD36734EEE /* More */,
+				FF19236FB0B5FCD142FD1A05 /* Orders */,
+				6E5638EF41C6F5BFB8E9CBFB /* Quotes */,
+				28AC3B30AF5A45D104D1D804 /* Transactions */,
+				73D61A8DF3979AC183D6A006 /* Transfers */,
+				A430B6A2877F4BAE38388F42 /* Watchlist */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9DFEE2920D551252736C894B /* RBCInvesting */ = {
+			isa = PBXGroup;
+			children = (
+				D35A2C3DECCF9D6C3228311C /* App */,
+				35472F3345A1F570E514CA09 /* Extensions */,
+				1C9841D4BB53ACB14C8DE0E4 /* Models */,
+				4D97181B3BA19CDA6F7E5B05 /* Services */,
+				CE038A2C75A738E7A0178590 /* ViewModels */,
+				836224F5E4C77B338B679A51 /* Views */,
+			);
+			path = RBCInvesting;
+			sourceTree = "<group>";
+		};
+		9EBBB52C9A5C3D29C4E468B6 /* Holdings */ = {
+			isa = PBXGroup;
+			children = (
+				F347526631122EBEE9F6AFFD /* HoldingsView.swift */,
+			);
+			path = Holdings;
+			sourceTree = "<group>";
+		};
+		9F09FC1A31C53376720FFB80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60E21594CB5ADF7F38BE21F4 /* RBCInvesting.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A430B6A2877F4BAE38388F42 /* Watchlist */ = {
+			isa = PBXGroup;
+			children = (
+				D6ABFAAB4CAB21760F2B963A /* WatchlistView.swift */,
+			);
+			path = Watchlist;
+			sourceTree = "<group>";
+		};
+		ACB8CE6CECCC0FE6623A18DA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				64E25B4EEC011104C66572AD /* FABButton.swift */,
+				5D9A9CF2E3A6F24EF0C80DED /* GainLossText.swift */,
+				9B7AEED943F8FB39184D12A3 /* MainTabView.swift */,
+				73A75D204C6E7582C1EC091A /* QuickActionsSheet.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		CE038A2C75A738E7A0178590 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				339A20F80AC5C80EFDE75C4C /* AuthViewModel.swift */,
+				BB24A587D2C25325C1F151AB /* AutoInvestViewModel.swift */,
+				52501C8F343862AF78503ADB /* BankingViewModel.swift */,
+				E9E185C364B2504C3845B763 /* OrderViewModel.swift */,
+				F2939287182CAF426FB349C1 /* PortfolioViewModel.swift */,
+				9AC61752069360B4BBD47B2D /* QuotesViewModel.swift */,
+				A3110DCEFA9798CB15512A9A /* TransactionViewModel.swift */,
+				A1459509573E58C7ECB888D8 /* WatchlistViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CF5D3916ADAE55538FB5DABD /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				EF3E2319A91FA891434BDCD7 /* AccountView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		D35A2C3DECCF9D6C3228311C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0F3DC75BEAC18FDD15DA445B /* Assets.xcassets */,
+				2C705AFF47CB3CC73E148D2B /* RBCInvestingApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		EF5D5A1A3FE9A15C75EB0C2F = {
+			isa = PBXGroup;
+			children = (
+				9DFEE2920D551252736C894B /* RBCInvesting */,
+				9F09FC1A31C53376720FFB80 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FF19236FB0B5FCD142FD1A05 /* Orders */ = {
+			isa = PBXGroup;
+			children = (
+				AF1D2D9CFF2CEF9CCCF5CE67 /* OrderEntryView.swift */,
+			);
+			path = Orders;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		01F2B130547BEA1BB890D3E4 /* RBCInvesting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 24AAC0BD45C588739E1B88EE /* Build configuration list for PBXNativeTarget "RBCInvesting" */;
+			buildPhases = (
+				1F151EF3B6BF7EA651EF11C1 /* Sources */,
+				48EB1D0F8EA49FFEFEB53FF9 /* Resources */,
+				B6A623FB63D49011C1FF8AA8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RBCInvesting;
+			packageProductDependencies = (
+				15239A264BBD162BFA7E0EDF /* DGCharts */,
+			);
+			productName = RBCInvesting;
+			productReference = 60E21594CB5ADF7F38BE21F4 /* RBCInvesting.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C7595F2BF66BE3D5CF599569 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					01F2B130547BEA1BB890D3E4 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 502210CA9974BE2E3590EBEF /* Build configuration list for PBXProject "RBCInvesting" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = EF5D5A1A3FE9A15C75EB0C2F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EFE5BCDFD34527BFEB950A29 /* XCRemoteSwiftPackageReference "Charts" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9F09FC1A31C53376720FFB80 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				01F2B130547BEA1BB890D3E4 /* RBCInvesting */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		48EB1D0F8EA49FFEFEB53FF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BA1C2FDF8DC51DA0D375874 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1F151EF3B6BF7EA651EF11C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D40E7E484760F2BC159B53DA /* APIService.swift in Sources */,
+				1229ADD3A95CC89CC80F5E3A /* AccountView.swift in Sources */,
+				F78DA1CF8229F1B1D327CE3A /* AuthViewModel.swift in Sources */,
+				0D27683B8AC37A31EC6F1D11 /* AutoInvestRuleRow.swift in Sources */,
+				132D80B54DDA3687DD5F1738 /* AutoInvestSetupSheet.swift in Sources */,
+				472B90646BEF37E8DF9C7520 /* AutoInvestView.swift in Sources */,
+				4A0DD388EBF42BA815C0C5A0 /* AutoInvestViewModel.swift in Sources */,
+				FC18B628E56E6DA016245061 /* BankingAccountCard.swift in Sources */,
+				99D6DC72ECFA357C6911DC73 /* BankingDetailView.swift in Sources */,
+				6FD6271F9D64124BCAAE9438 /* BankingViewModel.swift in Sources */,
+				9F8EA27B9DD24830140E7DEF /* DashboardView.swift in Sources */,
+				B8A806A7639A9F4E3E4F0BE4 /* FABButton.swift in Sources */,
+				90BD2FEF6BBFDB439B26790B /* GainLossText.swift in Sources */,
+				8EB35E08A90BEDEBF29DF97F /* HoldingsView.swift in Sources */,
+				EDB57355BEC8A849CC6924F3 /* LoginView.swift in Sources */,
+				C82182BAFA13674481B095F4 /* MainTabView.swift in Sources */,
+				C3E2A046B1BBFE0BE21E6A1A /* Models.swift in Sources */,
+				B0B5D26CFBD4CC9CF25E8255 /* MoreView.swift in Sources */,
+				88A501A4DDF6C11B4904C55D /* OrderEntryView.swift in Sources */,
+				E9D559E2F834974BC2B76004 /* OrderViewModel.swift in Sources */,
+				96020371D76228D04BDA6447 /* PieChartRepresentable.swift in Sources */,
+				1E25F623EC4726E6D77C4457 /* PortfolioAllocationSection.swift in Sources */,
+				9205FA57AE730F2E17F53784 /* PortfolioViewModel.swift in Sources */,
+				4E136C06381749696ED6B038 /* QuickActionsSheet.swift in Sources */,
+				E4C37510A8D6F50256F92D1F /* QuotesView.swift in Sources */,
+				C9B363860F18EF287DAC364F /* QuotesViewModel.swift in Sources */,
+				132F42DBB52447B29AC5BF96 /* RBCInvestingApp.swift in Sources */,
+				BB050233629378DB8BB11316 /* SliceDetailView.swift in Sources */,
+				46DA54B55B961273B11BCF16 /* StockChartView.swift in Sources */,
+				ACBD5AB0B3991CFAACF85179 /* Theme.swift in Sources */,
+				9E767EA6256E400AADFD80DA /* TransactionViewModel.swift in Sources */,
+				45EC33EFD64757105DAD1643 /* TransactionsView.swift in Sources */,
+				4F1F313340C0D7E9D31467DB /* TransfersView.swift in Sources */,
+				B6CA2E10B5AB1CBDE40861A1 /* WatchlistView.swift in Sources */,
+				87560B36DEA6901C1C08978A /* WatchlistViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		36609AEE40AD640166C248BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		52254145600883E7CDD4052F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D439A3BC815D72A7407E33F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = RBCInvesting/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rbcdirectinvesting.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FEA2319ADC7AF4E720D0A8D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = RBCInvesting/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rbcdirectinvesting.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		24AAC0BD45C588739E1B88EE /* Build configuration list for PBXNativeTarget "RBCInvesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D439A3BC815D72A7407E33F3 /* Debug */,
+				FEA2319ADC7AF4E720D0A8D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		502210CA9974BE2E3590EBEF /* Build configuration list for PBXProject "RBCInvesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36609AEE40AD640166C248BE /* Debug */,
+				52254145600883E7CDD4052F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EFE5BCDFD34527BFEB950A29 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		15239A264BBD162BFA7E0EDF /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFE5BCDFD34527BFEB950A29 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C7595F2BF66BE3D5CF599569 /* Project object */;
+}

@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "RBC API (Demo - H2 in-memory DB)",
+      "runtimeExecutable": "mvn",
+      "runtimeArgs": ["spring-boot:run", "-Dspring-boot.run.arguments=--spring.profiles.active=demo"],
+      "port": 8080,
+      "autoPort": false
+    },
+    {
+      "name": "RBC API (PostgreSQL)",
+      "runtimeExecutable": "mvn",
+      "runtimeArgs": ["spring-boot:run"],
+      "port": 8080,
+      "autoPort": false
+    }
+  ]
+}
