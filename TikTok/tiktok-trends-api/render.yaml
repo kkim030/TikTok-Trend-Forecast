@@ -1,0 +1,14 @@
+# Render Blueprint — one-click deploy of the demo backend.
+# After connecting the GitHub repo on render.com, hit "Apply" on this blueprint.
+services:
+  - type: web
+    name: tiktok-trends-api
+    runtime: docker
+    plan: free
+    region: oregon
+    rootDir: TikTok/tiktok-trends-api
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: demo

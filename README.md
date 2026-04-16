@@ -8,6 +8,16 @@ A full-stack app I built to help TikTok creators stop guessing what to post. It 
 
 ---
 
+## ▶ Try the demo (no install)
+
+The iOS app runs in your browser via [Appetize.io](https://appetize.io) — no Xcode or iPhone needed.
+
+> **Live demo:** _link will appear here once deployed — see [Deploying the demo](#deploying-the-demo)_
+
+Tap **Try Demo** on the login screen to skip TikTok OAuth and explore with seeded data (20 trends, 25 weeks of analytics, 3 AI recommendations). Sessions are capped at 3 minutes by Appetize's free tier; first request after backend sleep takes ~25s while it cold-starts.
+
+---
+
 ## What it does
 
 **Trending Now** — shows what's gaining traction on TikTok right now, broken into hashtags, music, and content categories. Each trend has a velocity score that measures week-over-week growth, so you can see not just what's popular but what's *accelerating*. No login needed to browse this.
@@ -185,3 +195,37 @@ If you don't have a TikTok developer app set up, just use demo mode — it works
 | 4 | AI recommendations via Claude | ✅ |
 | 5 | React frontend | ✅ |
 | 6 | Swagger docs + demo mode + tests | ✅ |
+
+---
+
+## Deploying the demo
+
+The public demo is two pieces hosted on free tiers: the Spring Boot backend on **Render** and the iOS app streamed in a browser via **Appetize.io**. The whole setup costs $0/month.
+
+### 1. Backend → Render
+
+1. Sign up at [render.com](https://render.com) (GitHub login is fine, no credit card required for the free tier).
+2. **New → Blueprint** → connect this repo. Render will detect [`TikTok/tiktok-trends-api/render.yaml`](TikTok/tiktok-trends-api/render.yaml) and create a `tiktok-trends-api` web service from the included `Dockerfile`.
+3. First build takes ~3–5 minutes. When it's green, copy the public URL — it'll be `https://tiktok-trends-api.onrender.com` (or similar).
+4. **Keep it warm**: free tier sleeps after 15 min idle (~25s cold start). Set up a free [UptimeRobot](https://uptimerobot.com) HTTP monitor pointed at `https://YOUR-RENDER-URL.onrender.com/actuator/health` on a 5-minute interval.
+
+### 2. iOS app → Appetize.io
+
+The iOS `APIClient` already swaps to the Render URL in Release builds (`#if DEBUG` toggles between localhost and prod). If your Render URL differs from the default, edit [`TikTok/tiktok-trends-ios/TikTokTrends/Core/Network/APIClient.swift`](TikTok/tiktok-trends-ios/TikTokTrends/Core/Network/APIClient.swift) before building.
+
+```bash
+cd TikTok/tiktok-trends-ios
+./build-for-appetize.sh
+# → produces build/TikTokTrends-appetize.zip
+```
+
+Then:
+
+1. Sign up at [appetize.io](https://appetize.io) (free tier: 100 min/month, 3-min sessions, watermark).
+2. Drag `build/TikTokTrends-appetize.zip` into the upload page.
+3. Pick an iPhone 15/16 device, iOS 17+.
+4. Copy the **public link** Appetize gives you and paste it into the "Live demo" callout near the top of this README.
+
+### 3. What the recruiter does
+
+Clicks the Appetize link → iOS sim loads in their browser → taps **Try Demo** → 3 minutes to explore Trends, Analytics, Create, Calendar.

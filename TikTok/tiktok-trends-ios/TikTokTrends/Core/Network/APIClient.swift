@@ -1,7 +1,13 @@
 import Foundation
 
-// Base URL — change to production URL when deploying
+// Base URL — Debug builds (Xcode → simulator) hit localhost.
+// Release builds (archived for Appetize / TestFlight) hit the public Render URL.
+// To rotate the production URL, edit the string below and rebuild Release.
+#if DEBUG
 private let baseURL = "http://localhost:8080"
+#else
+private let baseURL = "https://tiktok-trends-api.onrender.com"
+#endif
 
 @Observable
 final class APIClient {
