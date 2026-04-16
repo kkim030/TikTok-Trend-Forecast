@@ -2,7 +2,9 @@
 
 A full-stack app I built to help TikTok creators stop guessing what to post. It pulls live trend data from TikTok, compares your account stats against platform benchmarks, and uses Claude (Anthropic's AI) to suggest actual video ideas based on what's trending right now.
 
-![iOS App Hero](TikTok/docs/screenshots/ios-hero.png)
+<p align="center">
+  <img src="TikTok/docs/screenshots/ios-hero.png" width="280" alt="iOS App Hero" />
+</p>
 
 ---
 
@@ -10,21 +12,22 @@ A full-stack app I built to help TikTok creators stop guessing what to post. It 
 
 **Trending Now** — shows what's gaining traction on TikTok right now, broken into hashtags, music, and content categories. Each trend has a velocity score that measures week-over-week growth, so you can see not just what's popular but what's *accelerating*. No login needed to browse this.
 
-![Trends Tab](TikTok/docs/screenshots/ios-trends.png)
+<img src="TikTok/docs/screenshots/ios-trends.png" width="260" alt="Trends Tab" />
 
 **AI Video Concepts** — hit Generate and it takes the top trending hashtags, combines them with your niche, and sends it to Claude to generate a full video idea: title, what to film, which sound to use, and which hashtags to put in the caption.
 
-![Create Tab](TikTok/docs/screenshots/ios-create.png)
+<img src="TikTok/docs/screenshots/ios-create.png" width="260" alt="Create Tab" />
 
 **Performance Analytics** — connects to your TikTok account and tracks your engagement rate, view velocity, follower growth, watch time, and share rate over the past 6 months. Plots them on a chart against platform averages so you can actually see how you're doing, and grades each metric A–F.
 
-![Analytics Tab](TikTok/docs/screenshots/ios-analytics.png)
+<img src="TikTok/docs/screenshots/ios-analytics.png" width="260" alt="Analytics Tab" />
 
 **Content Calendar** — schedule the videos you want to film, see them on a month grid, and tap **Best Times** for a heatmap of when your audience is actually online based on your last 6 months of engagement.
 
-![Calendar Tab](TikTok/docs/screenshots/ios-calendar.png)
-
-![Best Times to Post](TikTok/docs/screenshots/ios-best-times.png)
+<p>
+  <img src="TikTok/docs/screenshots/ios-calendar.png" width="240" alt="Calendar Tab" />
+  <img src="TikTok/docs/screenshots/ios-best-times.png" width="240" alt="Best Times to Post" />
+</p>
 
 You sign in with your TikTok account (OAuth) so your real data gets pulled on login. There's also a demo mode if you just want to click around without connecting an account.
 
