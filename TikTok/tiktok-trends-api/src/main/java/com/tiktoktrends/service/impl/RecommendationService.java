@@ -48,12 +48,40 @@ public class RecommendationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         List<Trend> topTrends = trendRepo.findTopActiveByType("hashtag", LocalDateTime.now(), 5);
+        Trend topTrend = topTrends.isEmpty() ? null : topTrends.get(0);
 
-        String prompt = buildPrompt(user, topTrends);
-        String aiResponse = callClaudeApi(prompt);
-        Recommendation saved = parseAndSave(aiResponse, user, topTrends.isEmpty() ? null : topTrends.get(0));
+        // Demo / no real key — short-circuit to a canned recommendation rather than 500.
+        if (anthropicApiKey == null || anthropicApiKey.isBlank()
+                || anthropicApiKey.equalsIgnoreCase("demo")
+                || anthropicApiKey.startsWith("sk-ant-demo")) {
+            return toDto(recommendationRepo.save(buildDemoRecommendation(user, topTrend)));
+        }
 
-        return toDto(saved);
+        try {
+            String prompt = buildPrompt(user, topTrends);
+            String aiResponse = callClaudeApi(prompt);
+            Recommendation saved = parseAndSave(aiResponse, user, topTrend);
+            return toDto(saved);
+        } catch (Exception e) {
+            log.warn("Claude call failed ({}), falling back to canned recommendation", e.getMessage());
+            return toDto(recommendationRepo.save(buildDemoRecommendation(user, topTrend)));
+        }
+    }
+
+    private Recommendation buildDemoRecommendation(User user, Trend trend) {
+        String trendKeyword = trend != null ? trend.getKeyword() : "fyp";
+        String niche = user.getNiche() != null ? user.getNiche() : "lifestyle";
+        return Recommendation.builder()
+                .user(user)
+                .trend(trend)
+                .conceptTitle("POV: I tried the #" + trendKeyword + " trend in my " + niche + " niche")
+                .conceptDescription("Open with a 1.5s hook (\"You won't believe this worked\"), "
+                        + "then jump straight into the trend with a " + niche + "-specific twist. "
+                        + "End on a slow-mo reveal and ask viewers what they'd do differently.")
+                .suggestedMusic("Original Sound - viralbeats")
+                .suggestedHashtags(List.of("#" + trendKeyword, "#fyp", "#" + niche, "#viral", "#trending"))
+                .confidenceScore(0.88)
+                .build();
     }
 
     public List<RecommendationResponse> getRecentRecommendations(UUID userId) {

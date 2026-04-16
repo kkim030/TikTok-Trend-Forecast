@@ -1,7 +1,10 @@
 package com.tiktoktrends.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -18,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class AppConfig {
@@ -34,9 +39,18 @@ public class AppConfig {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
+        // iOS .iso8601 round-trip:
+        //   serialize LocalDateTime as "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        //   deserialize same shape (with optional fractional secs / Z) back to LocalDateTime
+        JavaTimeModule timeModule = new JavaTimeModule();
+        DateTimeFormatter isoOutFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateTimeFormatter isoInFmt  = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S][XXX][X]");
+        timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(isoOutFmt));
+        timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(isoInFmt));
+
+        return new ObjectMapper()
+                .registerModule(timeModule)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     @Bean

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TikTok Trends iOS — User Flow</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "SF Pro Rounded", "Helvetica Neue", sans-serif;
+      background: #FFF0F3;
+      min-height: 100vh;
+      padding: 32px 24px 64px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #C2185B;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #C2185B;
+      opacity: 0.6;
+      margin-bottom: 40px;
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #E91E8C;
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+
+    /* ── ROWS ── */
+    .row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 0;
+      flex-wrap: wrap;
+    }
+
+    /* ── ARROW connectors ── */
+    .arrow-down {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 36px;
+      font-size: 22px;
+      color: #FFB6C1;
+    }
+    .arrow-right {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      color: #FFB6C1;
+      padding-top: 24px; /* aligns with card middle */
+      flex-shrink: 0;
+    }
+
+    /* ── SCREEN CARD ── */
+    .screen {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(255, 182, 193, 0.35);
+      padding: 0;
+      width: 148px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .screen:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(233, 30, 140, 0.2);
+    }
+    .screen.active {
+      outline: 2.5px solid #E91E8C;
+    }
+
+    /* Phone chrome */
+    .phone-top {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #FFF0F3;
+      position: relative;
+    }
+    .phone-notch {
+      width: 48px;
+      height: 10px;
+      background: #eee;
+      border-radius: 8px;
+    }
+    .screen-body {
+      padding: 10px 10px 12px;
+      min-height: 148px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .screen-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #C2185B;
+    }
+    .screen-tag {
+      font-size: 9.5px;
+      color: #999;
+      font-weight: 500;
+    }
+
+    /* Mini UI mockup pieces */
+    .mock-bar {
+      height: 7px;
+      border-radius: 4px;
+      background: #FFF0F3;
+    }
+    .mock-bar.accent { background: #FFB6C1; }
+    .mock-bar.dark   { background: #E91E8C; width: 60%; }
+    .mock-bar.short  { width: 55%; }
+    .mock-bar.med    { width: 80%; }
+    .mock-bar.full   { width: 100%; }
+
+    .mock-btn {
+      height: 22px;
+      border-radius: 100px;
+      background: #E91E8C;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .mock-btn.ghost {
+      background: transparent;
+      border: 1.5px solid #E91E8C;
+      color: #E91E8C;
+    }
+    .mock-btn.mint  { background: #B2DFDB; color: #333; }
+    .mock-btn.lav   { background: #E1BEE7; color: #555; }
+
+    .mock-card {
+      background: #FFF0F3;
+      border-radius: 10px;
+      padding: 6px 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .mock-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFB6C1, #E91E8C);
+      margin: 0 auto 4px;
+    }
+    .mock-avatar.large {
+      width: 44px; height: 44px;
+    }
+
+    .mock-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+    .mock-cell {
+      background: #FFF0F3;
+      border-radius: 8px;
+      height: 30px;
+    }
+    .mock-cell.wide {
+      grid-column: span 2;
+      height: 30px;
+    }
+    .mock-cell.tall {
+      height: 44px;
+    }
+
+    .mock-chip {
+      display: inline-block;
+      background: #FFB6C1;
+      border-radius: 100px;
+      font-size: 8px;
+      padding: 2px 7px;
+      color: #C2185B;
+      font-weight: 600;
+      margin-right: 3px;
+    }
+    .mock-chip.accent { background: #E91E8C; color: white; }
+
+    .mock-seg {
+      display: flex;
+      gap: 2px;
+      background: #FFF0F3;
+      border-radius: 8px;
+      padding: 3px;
+    }
+    .mock-seg-item {
+      flex: 1;
+      height: 14px;
+      border-radius: 6px;
+      background: transparent;
+    }
+    .mock-seg-item.active {
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .mock-chart {
+      height: 36px;
+      background: linear-gradient(to bottom, #FFB6C120, #FFB6C108);
+      border-radius: 8px;
+      border-bottom: 2px solid #E91E8C;
+      position: relative;
+      overflow: hidden;
+    }
+    .mock-chart::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'%3E%3Cpolyline points='0,25 15,18 30,22 50,10 65,14 80,6 100,4' fill='none' stroke='%23E91E8C' stroke-width='2'/%3E%3C/svg%3E") no-repeat bottom/100%;
+    }
+
+    .mock-cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .mock-cal-day {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      background: #FFF0F3;
+      font-size: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-weight: 600;
+    }
+    .mock-cal-day.dot::after {
+      content: '';
+      display: block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #E91E8C;
+      margin: 0 auto;
+    }
+    .mock-cal-day.dot { font-size: 0; }
+    .mock-cal-day.today {
+      background: #E91E8C;
+      color: white;
+    }
+
+    .mock-player {
+      background: #FFF0F3;
+      border-radius: 8px;
+      padding: 5px 7px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .mock-player-thumb {
+      width: 20px; height: 20px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #E1BEE7, #C2185B);
+      flex-shrink: 0;
+    }
+    .mock-play-btn {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: #E91E8C;
+      flex-shrink: 0;
+    }
+
+    .mock-grade-row {
+      display: flex;
+      gap: 3px;
+      overflow: hidden;
+    }
+    .mock-grade {
+      flex: 1;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .mock-heatmap {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .mock-heat-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .mock-heat-cell {
+      height: 6px;
+      border-radius: 2px;
+      background: #FFB6C1;
+    }
+
+    .mock-thumb-row {
+      display: flex;
+      gap: 4px;
+    }
+    .mock-thumb {
+      width: 36px; height: 52px;
+      border-radius: 7px;
+      background: linear-gradient(160deg, #FFB6C1, #E91E8C);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .mock-thumb::after {
+      content: '';
+      position: absolute;
+      bottom: 3px; left: 3px;
+      width: 70%; height: 5px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 3px;
+    }
+
+    /* ── SCREEN FOOTER ── */
+    .screen-footer {
+      background: #FFF0F3;
+      padding: 6px 10px;
+      font-size: 9px;
+      font-weight: 600;
+      color: #E91E8C;
+      border-top: 1px solid #FFE4EC;
+    }
+
+    /* ── NEW BADGE ── */
+    .badge-new {
+      position: absolute;
+      top: 6px; right: 6px;
+      background: #E91E8C;
+      color: white;
+      font-size: 7px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 100px;
+    }
+
+    /* ── TAB BAR MOCK ── */
+    .mock-tabbar {
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      border-top: 1px solid #FFB6C1;
+      padding: 5px 0 3px;
+    }
+    .mock-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .mock-tab-icon {
+      width: 18px; height: 14px;
+      border-radius: 3px;
+      background: #eee;
+    }
+    .mock-tab-icon.active { background: #E91E8C; }
+    .mock-tab-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: transparent;
+    }
+    .mock-tab-dot.active { background: #E91E8C; }
+
+    /* ── LAYOUT ZONES ── */
+    .zone {
+      background: white;
+      border-radius: 24px;
+      padding: 20px 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(255, 182, 193, 0.2);
+    }
+
+    .zone-auth { border-top: 3px solid #E91E8C; }
+    .zone-tabs { border-top: 3px solid #FFB6C1; }
+    .zone-details { border-top: 3px solid #E1BEE7; }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    /* tooltip on hover */
+    .screen[data-tip]:hover::before {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .connector-label {
+      font-size: 9px;
+      color: #C2185B;
+      font-weight: 600;
+      text-align: center;
+      margin: -8px 0 2px;
+      opacity: 0.75;
+    }
+
+    .auth-options {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .auth-option-label {
+      font-size: 9px;
+      color: #C2185B;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>TikTok Trends iOS</h1>
+  <p class="subtitle">User Flow · Kawaii Bento Design</p>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#E91E8C"></div> Auth screens</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FFB6C1"></div> Main tabs</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E1BEE7"></div> Detail / sheet screens</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#B2DFDB"></div> New features ✨</div>
+  </div>
+
+  <!-- ── ZONE 1: AUTH ── -->
+  <div class="zone zone-auth">
+    <div class="section-label">① App Launch</div>
+    <div class="row" style="justify-content:center; margin-bottom:8px;">
+
+      <!-- Launch -->
+      <div class="screen" data-tip="Checks JWT in Keychain">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="screen-body">
+          <div class="mock-avatar large"></div>
+          <div class="mock-bar dark" style="margin:0 auto; width:70%"></div>
+          <div class="mock-bar short" style="margin:0 auto; opacity:.4"></div>
+        </div>
+        <div class="screen-footer">🚀 App Launch</div>
+      </div>
+
+      <div class="arrow-right">→</div>
+
+      <!-- Login -->
+      <div class="screen" data-tip="TikTok OAuth or Demo">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="screen-body">
+          <div class="mock-avatar"></div>
+          <div class="mock-bar dark" style="margin:0 auto; width:65%"></div>
+          <div style="height:6px"></div>
+          <div class="mock-btn">Connect with TikTok</div>
+          <div class="mock-btn ghost">Try Demo</div>
+        </div>
+        <div class="screen-footer">🔐 Login</div>
+      </div>
+
+      <div class="arrow-right">→</div>
+
+      <!-- Main App -->
+      <div class="screen" style="width:160px" data-tip="4-tab shell after login">
+        <div class="phone-top"><div class="phone-notch"></div></div>
+        <div class="screen-body" style="min-height:100px">
+          <div class="mock-bar full accent" style="opacity:.5"></div>
+          <div style="flex:1"></div>
+        </div>
+        <div class="mock-tabbar">
+          <div class="mock-tab"><div class="mock-tab-icon active"></div><div class="mock-tab-dot active"></div></div>
+          <div class="mock-tab"><div class="mock-tab-icon"></div><div class="mock-tab-dot"></div></div>
+          <div class="mock-tab"><div class="mock-tab-icon"></div><div class="mock-tab-dot"></div></div>
+          <div class="mock-tab"><div class="mock-tab-icon"></div><div class="mock-tab-dot"></div></div>
+        </div>
+        <div class="screen-footer">🏠 Main App</div>
+      </div>
+
+    </div>
+    <div style="text-align:center; font-size:10px; color:#C2185B; opacity:.65; margin-top:4px;">
+      If JWT exists in Keychain → skip Login → go straight to Main App
+    </div>
+  </div>
+
+  <!-- ── ZONE 2: MAIN TABS ── -->
+  <div class="zone zone-tabs">
+    <div class="section-label">② Main Tabs (always visible)</div>
+    <div class="row" style="align-items:flex-start; gap:12px;">
+
+      <!-- TAB 1: Trends -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <div class="auth-option-label">📈 Tab 1</div>
+        <div class="screen">
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-seg">
+              <div class="mock-seg-item active"></div>
+              <div class="mock-seg-item"></div>
+              <div class="mock-seg-item"></div>
+              <div class="mock-seg-item"></div>
+            </div>
+            <div class="mock-grid">
+              <div class="mock-cell wide"></div>
+              <div class="mock-cell"></div>
+              <div class="mock-cell"></div>
+            </div>
+            <div class="mock-grid">
+              <div class="mock-cell wide"></div>
+              <div class="mock-cell"></div>
+              <div class="mock-cell"></div>
+            </div>
+          </div>
+          <div class="screen-footer">📈 Trends</div>
+        </div>
+        <div style="font-size:9px; color:#C2185B; text-align:center; max-width:148px; line-height:1.4;">
+          All / Hashtags / Music / Categories tabs<br>Bento grid layout
+        </div>
+      </div>
+
+      <!-- TAB 2: Analytics -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <div class="auth-option-label">📊 Tab 2</div>
+        <div class="screen">
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-grade-row">
+              <div class="mock-grade" style="background:#4CAF5025; color:#4CAF50">A</div>
+              <div class="mock-grade" style="background:#2196F325; color:#2196F3">B</div>
+              <div class="mock-grade" style="background:#FFC10725; color:#FFC107">C</div>
+              <div class="mock-grade" style="background:#FF980025; color:#FF9800">D</div>
+            </div>
+            <div class="mock-chart"></div>
+            <div class="mock-btn" style="font-size:8px; margin-top:4px;">AI Analyze My Videos ✨</div>
+          </div>
+          <div class="screen-footer">📊 Analytics</div>
+        </div>
+        <div style="font-size:9px; color:#C2185B; text-align:center; max-width:148px; line-height:1.4;">
+          KPI grades + line chart<br>Benchmark overlay
+        </div>
+      </div>
+
+      <!-- TAB 3: Create -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <div class="auth-option-label">✨ Tab 3</div>
+        <div class="screen">
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-btn">Generate New Idea ✨</div>
+            <div style="height:4px"></div>
+            <div class="mock-card">
+              <div class="mock-bar full" style="background:#FFB6C1"></div>
+              <div class="mock-bar med" style="opacity:.5"></div>
+              <div style="display:flex; gap:3px; margin-top:2px;">
+                <span class="mock-chip">#trend1</span>
+                <span class="mock-chip">#trend2</span>
+              </div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-bar full" style="background:#FFB6C1"></div>
+              <div class="mock-bar med" style="opacity:.5"></div>
+            </div>
+          </div>
+          <div class="screen-footer">✨ Create</div>
+        </div>
+        <div style="font-size:9px; color:#C2185B; text-align:center; max-width:148px; line-height:1.4;">
+          AI-generated video ideas<br>Recent recommendations
+        </div>
+      </div>
+
+      <!-- TAB 4: Calendar -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <div class="auth-option-label">🗓️ Tab 4 · New</div>
+        <div class="screen">
+          <div class="badge-new">NEW</div>
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-cal-grid">
+              <div class="mock-cal-day">S</div>
+              <div class="mock-cal-day">M</div>
+              <div class="mock-cal-day">T</div>
+              <div class="mock-cal-day">W</div>
+              <div class="mock-cal-day">T</div>
+              <div class="mock-cal-day">F</div>
+              <div class="mock-cal-day">S</div>
+              <div class="mock-cal-day">1</div>
+              <div class="mock-cal-day">2</div>
+              <div class="mock-cal-day dot"></div>
+              <div class="mock-cal-day today">4</div>
+              <div class="mock-cal-day dot"></div>
+              <div class="mock-cal-day">6</div>
+              <div class="mock-cal-day">7</div>
+              <div class="mock-cal-day">8</div>
+              <div class="mock-cal-day dot"></div>
+              <div class="mock-cal-day">10</div>
+              <div class="mock-cal-day">11</div>
+              <div class="mock-cal-day">12</div>
+              <div class="mock-cal-day dot"></div>
+            </div>
+            <div style="height:6px"></div>
+            <div class="mock-card">
+              <div class="mock-bar med" style="background:#FFB6C1"></div>
+            </div>
+          </div>
+          <div class="screen-footer">🗓️ Calendar</div>
+        </div>
+        <div style="font-size:9px; color:#C2185B; text-align:center; max-width:148px; line-height:1.4;">
+          Monthly grid<br>Scheduled / posted / draft dots
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── ZONE 3: DETAIL SCREENS ── -->
+  <div class="zone zone-details">
+    <div class="section-label">③ Detail & Sheet Screens (pushed / presented from tabs)</div>
+    <div class="row" style="align-items:flex-start; gap:12px; flex-wrap:wrap;">
+
+      <!-- Trend Detail -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div class="auth-option-label" style="color:#9C27B0">← from Trends</div>
+        <div class="screen">
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-bar dark" style="width:80%"></div>
+            <div style="display:flex; gap:3px; flex-wrap:wrap;">
+              <span class="mock-chip accent">#hashtag</span>
+              <span class="mock-chip">🔥🔥🔥</span>
+            </div>
+            <div class="mock-thumb-row">
+              <div class="mock-thumb"></div>
+              <div class="mock-thumb"></div>
+              <div class="mock-thumb" style="opacity:.5"></div>
+            </div>
+            <div class="mock-btn ghost" style="font-size:8px">Create with trend →</div>
+          </div>
+          <div class="screen-footer">🔍 Trend Detail</div>
+        </div>
+        <div style="font-size:9px; color:#9C27B0; text-align:center; max-width:148px; line-height:1.4;">
+          Stats + top TikTok videos carousel
+        </div>
+      </div>
+
+      <!-- Music Player (inside Trend Detail for music) -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div class="auth-option-label" style="color:#9C27B0">← music trends only</div>
+        <div class="screen">
+          <div class="badge-new">NEW</div>
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-bar dark" style="width:75%"></div>
+            <div class="mock-chip" style="background:#E1BEE7; color:#7B1FA2">♪ Music</div>
+            <div style="height:4px"></div>
+            <div class="mock-player">
+              <div class="mock-player-thumb"></div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:2px;">
+                <div class="mock-bar full" style="background:#E1BEE7; height:5px"></div>
+                <div class="mock-bar short" style="opacity:.4; height:4px"></div>
+              </div>
+              <div class="mock-play-btn"></div>
+            </div>
+            <div class="mock-bar full" style="background:#E91E8C20; height:4px; border-radius:4px; margin-top:2px"></div>
+          </div>
+          <div class="screen-footer">🎵 Music Preview</div>
+        </div>
+        <div style="font-size:9px; color:#9C27B0; text-align:center; max-width:148px; line-height:1.4;">
+          AVPlayer 30s preview<br>cover art + progress bar
+        </div>
+      </div>
+
+      <!-- Video Analysis -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div class="auth-option-label" style="color:#009688">← from Analytics</div>
+        <div class="screen">
+          <div class="badge-new">NEW</div>
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-bar dark" style="width:90%"></div>
+            <div class="mock-thumb-row" style="justify-content:center">
+              <div class="mock-thumb" style="background: linear-gradient(160deg,#B2DFDB,#009688)"></div>
+              <div class="mock-thumb" style="background: linear-gradient(160deg,#B2DFDB,#009688); opacity:.8"></div>
+              <div class="mock-thumb" style="background: linear-gradient(160deg,#B2DFDB,#009688); opacity:.6"></div>
+            </div>
+            <div class="mock-bar full" style="opacity:.5"></div>
+            <div class="mock-bar med" style="opacity:.35"></div>
+            <div class="mock-bar short" style="opacity:.25"></div>
+          </div>
+          <div class="screen-footer">🧠 AI Video Analysis</div>
+        </div>
+        <div style="font-size:9px; color:#009688; text-align:center; max-width:148px; line-height:1.4;">
+          Claude explains why your<br>top videos performed well
+        </div>
+      </div>
+
+      <!-- Recommendation Detail -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div class="auth-option-label" style="color:#E91E8C">← from Create</div>
+        <div class="screen">
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-bar dark" style="width:80%"></div>
+            <div class="mock-bar med" style="opacity:.5"></div>
+            <div class="mock-player">
+              <div class="mock-player-thumb" style="background: linear-gradient(135deg,#E1BEE7,#9C27B0)"></div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:2px;">
+                <div class="mock-bar full" style="background:#E1BEE7; height:5px"></div>
+              </div>
+              <div class="mock-play-btn" style="background:#9C27B0"></div>
+            </div>
+            <div style="display:flex; gap:3px; flex-wrap:wrap;">
+              <span class="mock-chip accent">#tag1</span>
+              <span class="mock-chip accent">#tag2</span>
+              <span class="mock-chip accent">#tag3</span>
+            </div>
+            <div class="mock-btn mint" style="font-size:8px;">📅 Schedule This</div>
+          </div>
+          <div class="screen-footer">💡 Rec Detail</div>
+        </div>
+        <div style="font-size:9px; color:#E91E8C; text-align:center; max-width:148px; line-height:1.4;">
+          Full concept + music preview<br>+ "Schedule This" → Calendar
+        </div>
+      </div>
+
+      <!-- Calendar Entry Sheet -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div class="auth-option-label" style="color:#2196F3">← from Calendar / Rec</div>
+        <div class="screen">
+          <div class="badge-new">NEW</div>
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-bar short" style="background:#2196F360"></div>
+            <div class="mock-card">
+              <div class="mock-bar full" style="background:#E3F2FD"></div>
+              <div class="mock-bar med" style="background:#E3F2FD; margin-top:2px"></div>
+            </div>
+            <div style="display:flex; gap:3px;">
+              <div class="mock-btn lav" style="flex:1; font-size:8px;">Draft</div>
+              <div class="mock-btn" style="flex:1; font-size:8px; background:#2196F3">Sched</div>
+              <div class="mock-btn mint" style="flex:1; font-size:8px;">Posted</div>
+            </div>
+            <div class="mock-btn" style="font-size:8px; background:#2196F3; margin-top:2px">Save</div>
+          </div>
+          <div class="screen-footer">📝 Entry Sheet</div>
+        </div>
+        <div style="font-size:9px; color:#2196F3; text-align:center; max-width:148px; line-height:1.4;">
+          Title, notes, date/time<br>Draft / Scheduled / Posted
+        </div>
+      </div>
+
+      <!-- Optimal Timing -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div class="auth-option-label" style="color:#FF9800">← from Calendar</div>
+        <div class="screen">
+          <div class="badge-new">NEW</div>
+          <div class="phone-top"><div class="phone-notch"></div></div>
+          <div class="screen-body">
+            <div class="mock-bar dark" style="width:80%; background:#FF9800"></div>
+            <div class="mock-heatmap">
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.2"></div>
+                <div class="mock-heat-cell" style="opacity:.4"></div>
+                <div class="mock-heat-cell" style="opacity:.9; background:#E91E8C"></div>
+                <div class="mock-heat-cell" style="opacity:.3"></div>
+              </div>
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.1"></div>
+                <div class="mock-heat-cell" style="opacity:.6; background:#FF9800"></div>
+                <div class="mock-heat-cell" style="opacity:.5"></div>
+                <div class="mock-heat-cell" style="opacity:.2"></div>
+              </div>
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.3"></div>
+                <div class="mock-heat-cell" style="opacity:.3"></div>
+                <div class="mock-heat-cell" style="opacity:.8; background:#E91E8C"></div>
+                <div class="mock-heat-cell" style="opacity:.4"></div>
+              </div>
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.15"></div>
+                <div class="mock-heat-cell" style="opacity:.7; background:#FF9800"></div>
+                <div class="mock-heat-cell" style="opacity:.4"></div>
+                <div class="mock-heat-cell" style="opacity:.1"></div>
+              </div>
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.2"></div>
+                <div class="mock-heat-cell" style="opacity:.5"></div>
+                <div class="mock-heat-cell" style="opacity:.95; background:#E91E8C"></div>
+                <div class="mock-heat-cell" style="opacity:.3"></div>
+              </div>
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.5; background:#FF9800"></div>
+                <div class="mock-heat-cell" style="opacity:.8; background:#E91E8C"></div>
+                <div class="mock-heat-cell" style="opacity:.3"></div>
+                <div class="mock-heat-cell" style="opacity:.1"></div>
+              </div>
+              <div class="mock-heat-col">
+                <div class="mock-heat-cell" style="opacity:.2"></div>
+                <div class="mock-heat-cell" style="opacity:.3"></div>
+                <div class="mock-heat-cell" style="opacity:.6"></div>
+                <div class="mock-heat-cell" style="opacity:.1"></div>
+              </div>
+            </div>
+            <div style="height:4px"></div>
+            <div class="mock-bar short" style="background:#FF980050; height:5px"></div>
+            <div class="mock-bar med" style="background:#FF980035; height:5px"></div>
+          </div>
+          <div class="screen-footer">🕐 Best Times</div>
+        </div>
+        <div style="font-size:9px; color:#FF9800; text-align:center; max-width:148px; line-height:1.4;">
+          Day × hour heatmap<br>Best 5 posting slots
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FLOW SUMMARY ── -->
+  <div style="background:white; border-radius:20px; padding:20px 24px; box-shadow: 0 2px 12px rgba(255,182,193,0.2);">
+    <div class="section-label" style="margin-bottom:14px;">④ Key User Journeys</div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:12px;">
+
+      <div style="background:#FFF0F3; border-radius:14px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#E91E8C; margin-bottom:8px;">🎯 Discover a Trend</div>
+        <div style="font-size:11px; color:#555; line-height:1.8;">
+          Trends → tap card → <strong>Trend Detail</strong><br>
+          → scroll top TikToks →<br>
+          tap "Create with this trend" → <strong>Create</strong>
+        </div>
+      </div>
+
+      <div style="background:#FFF0F3; border-radius:14px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#9C27B0; margin-bottom:8px;">🎵 Hear Trending Music</div>
+        <div style="font-size:11px; color:#555; line-height:1.8;">
+          Trends → Music tab →<br>
+          tap ▶ on card → <strong>inline preview</strong><br>
+          or → Trend Detail → <strong>Music Player bar</strong>
+        </div>
+      </div>
+
+      <div style="background:#FFF0F3; border-radius:14px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#E91E8C; margin-bottom:8px;">✨ Get an AI Video Idea</div>
+        <div style="font-size:11px; color:#555; line-height:1.8;">
+          Create → "Generate New Idea" →<br>
+          shimmer loading → card appears →<br>
+          tap → <strong>Rec Detail</strong> → copy hashtags
+        </div>
+      </div>
+
+      <div style="background:#FFF0F3; border-radius:14px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#2196F3; margin-bottom:8px;">📅 Plan & Schedule</div>
+        <div style="font-size:11px; color:#555; line-height:1.8;">
+          Rec Detail → "Schedule This" →<br>
+          <strong>Entry Sheet</strong> (pre-filled) → save →<br>
+          pink dot appears on <strong>Calendar grid</strong>
+        </div>
+      </div>
+
+      <div style="background:#FFF0F3; border-radius:14px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#009688; margin-bottom:8px;">🧠 Understand Your Performance</div>
+        <div style="font-size:11px; color:#555; line-height:1.8;">
+          Analytics → see KPI grades →<br>
+          tap chart KPI card →<br>
+          "AI Analyze" → <strong>Video Analysis</strong>
+        </div>
+      </div>
+
+      <div style="background:#FFF0F3; border-radius:14px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#FF9800; margin-bottom:8px;">🕐 Find Best Post Time</div>
+        <div style="font-size:11px; color:#555; line-height:1.8;">
+          Calendar → "Best Times 🕐" chip →<br>
+          <strong>Optimal Timing heatmap</strong> →<br>
+          back → create entry at best slot
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendar Screen — Kawaii Bento</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "SF Pro Rounded", "Helvetica Neue", sans-serif;
+      background: #e8e8e8;
+      display: flex; justify-content: center; align-items: flex-start;
+      gap: 32px; padding: 40px 24px; flex-wrap: wrap; min-height: 100vh;
+    }
+    .phone {
+      width: 390px; min-height: 844px; background: #FFF0F3; border-radius: 50px;
+      box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #333, 0 30px 80px rgba(0,0,0,.45);
+      overflow: hidden; position: relative; flex-shrink: 0;
+    }
+    .di { width: 120px; height: 34px; background: #1a1a1a; border-radius: 20px; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); }
+    .sb { height: 54px; background: #FFF0F3; display: flex; align-items: center; justify-content: space-between; padding: 16px 28px 0; font-size: 13px; font-weight: 600; color: #333; }
+    .nb { padding: 6px 20px 4px; display: flex; align-items: center; justify-content: space-between; }
+    .nt { font-size: 28px; font-weight: 800; color: #C2185B; }
+    .av { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#FFB6C1,#E91E8C); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700; }
+    .tabbar { position: absolute; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #FFE4EC; display: flex; padding: 10px 0 24px; }
+    .ti { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; font-weight: 500; color: #ccc; }
+    .ti.on { color: #E91E8C; }
+    .ti-icon { font-size: 22px; }
+    .sa { padding: 0 16px; overflow-y: auto; max-height: 660px; }
+
+    /* Month nav */
+    .month-nav { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 10px; }
+    .month-nav h2 { font-size: 18px; font-weight: 800; color: #C2185B; }
+    .month-nav button { background: white; border: none; width: 30px; height: 30px; border-radius: 50%; box-shadow: 0 2px 8px rgba(255,182,193,.3); font-size: 14px; cursor: pointer; }
+    .best-chip { background: #FCE4EC; color: #E91E8C; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 100px; border: none; cursor: pointer; }
+
+    /* Calendar grid */
+    .cal-header { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 6px; }
+    .cal-header span { text-align: center; font-size: 10px; font-weight: 700; color: #aaa; padding: 2px 0; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 14px; }
+    .cal-day {
+      aspect-ratio: 1; border-radius: 10px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; cursor: pointer;
+      transition: background .15s; position: relative; background: white;
+      box-shadow: 0 1px 4px rgba(255,182,193,.15);
+    }
+    .cal-day:hover { background: #FCE4EC; }
+    .cal-day.empty { background: transparent; box-shadow: none; cursor: default; }
+    .cal-day.today { background: #E91E8C !important; }
+    .cal-day.today .day-num { color: white !important; }
+    .cal-day.selected { background: #FCE4EC; outline: 2px solid #E91E8C; }
+    .day-num { font-size: 12px; font-weight: 700; color: #333; }
+    .day-dots { display: flex; gap: 2px; margin-top: 2px; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; }
+    .dot-pink { background: #E91E8C; }
+    .dot-mint { background: #009688; }
+    .dot-lav  { background: #9C27B0; }
+
+    /* Entries below grid */
+    .selected-day-label { font-size: 13px; font-weight: 700; color: #C2185B; margin-bottom: 8px; }
+    .entry-card {
+      background: white; border-radius: 16px; padding: 12px 14px;
+      box-shadow: 0 3px 10px rgba(255,182,193,.2); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+    }
+    .entry-color-bar { width: 4px; border-radius: 2px; align-self: stretch; flex-shrink: 0; }
+    .entry-info { flex: 1; }
+    .entry-title { font-size: 13px; font-weight: 700; color: #333; }
+    .entry-time { font-size: 10px; color: #aaa; margin-top: 2px; }
+    .entry-status { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+
+    /* FAB */
+    .fab {
+      position: absolute; bottom: 90px; right: 20px;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg,#E91E8C,#C2185B);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 24px; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(233,30,140,.4);
+      transition: transform .15s;
+    }
+    .fab:hover { transform: scale(1.1); }
+    .fab:active { transform: scale(0.95); }
+
+    /* Entry sheet */
+    .sheet-handle { width: 36px; height: 4px; background: #ddd; border-radius: 2px; margin: 10px auto 16px; }
+    .sheet-title { font-size: 18px; font-weight: 800; color: #222; margin-bottom: 16px; }
+    .field-label { font-size: 10px; font-weight: 700; color: #E91E8C; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 5px; }
+    .field-input { width: 100%; background: #FFF0F3; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-family: inherit; color: #333; outline: none; margin-bottom: 12px; }
+    .field-input:focus { outline: 2px solid #FFB6C1; }
+    .status-row { display: flex; gap: 6px; margin-bottom: 14px; }
+    .status-pill {
+      flex: 1; padding: 8px 4px; border-radius: 100px; text-align: center;
+      font-size: 11px; font-weight: 700; border: 1.5px solid #eee;
+      cursor: pointer; transition: all .15s; background: white; color: #aaa;
+    }
+    .status-pill.active-draft { background: #E1BEE7; color: #7B1FA2; border-color: #7B1FA2; }
+    .status-pill.active-sched { background: #E3F2FD; color: #1565C0; border-color: #1565C0; }
+    .status-pill.active-posted { background: #E8F5E9; color: #2E7D32; border-color: #2E7D32; }
+    .save-btn { width: 100%; background: linear-gradient(135deg,#E91E8C,#C2185B); border: none; border-radius: 16px; padding: 14px; color: white; font-size: 14px; font-weight: 800; cursor: pointer; margin-top: 4px; }
+
+    /* Optimal timing */
+    .heatmap-grid { display: grid; grid-template-columns: 32px repeat(7,1fr); gap: 3px; }
+    .hm-label { font-size: 8px; color: #aaa; display: flex; align-items: center; font-weight: 600; }
+    .hm-cell { height: 14px; border-radius: 3px; }
+    .hm-col-header { font-size: 8px; font-weight: 700; color: #C2185B; text-align: center; padding-bottom: 3px; }
+    .best-slot { display: flex; align-items: center; justify-content: space-between; background: #FFF0F3; border-radius: 10px; padding: 8px 12px; margin-bottom: 6px; }
+    .best-slot strong { font-size: 12px; color: #333; font-weight: 700; }
+    .best-slot span { font-size: 10px; color: #E91E8C; font-weight: 700; }
+
+    .label-panel { width: 280px; display: flex; flex-direction: column; gap: 16px; padding-top: 60px; }
+    .label-panel h2 { font-size: 22px; font-weight: 800; color: #C2185B; }
+    .note { background: white; border-radius: 16px; padding: 14px 16px; box-shadow: 0 2px 12px rgba(255,182,193,.2); }
+    .note-title { font-size: 12px; font-weight: 700; color: #E91E8C; margin-bottom: 6px; }
+    .note p { font-size: 12px; color: #666; line-height: 1.6; }
+    .pl { text-align:center; font-size:12px; font-weight:700; color:#888; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+  </style>
+</head>
+<body>
+
+<!-- Phone 1: Calendar main -->
+<div>
+  <p class="pl">Calendar Tab</p>
+  <div class="phone">
+    <div class="di"></div>
+    <div class="sb"><span style="font-weight:700;font-size:15px">9:41</span><span>●●● WiFi 🔋</span></div>
+    <div class="nb">
+      <div class="nt">Calendar 🗓️</div>
+      <button class="best-chip" onclick="alert('→ Opens Optimal Timing heatmap (shown in right phone)')">Best Times 🕐</button>
+    </div>
+
+    <div class="sa">
+      <!-- Month nav -->
+      <div class="month-nav">
+        <button onclick="changeMonth(-1)">‹</button>
+        <h2 id="monthLabel">April 2026</h2>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+
+      <!-- Day headers -->
+      <div class="cal-header">
+        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+      </div>
+
+      <!-- Calendar grid -->
+      <div class="cal-grid" id="calGrid"></div>
+
+      <!-- Selected day entries -->
+      <div id="dayEntries"></div>
+
+      <div style="height:90px"></div>
+    </div>
+
+    <!-- FAB -->
+    <div class="fab" onclick="alert('→ Opens Calendar Entry Sheet')">+</div>
+
+    <div class="tabbar">
+      <div class="ti"><div class="ti-icon">📈</div>Trends</div>
+      <div class="ti"><div class="ti-icon">📊</div>Analytics</div>
+      <div class="ti"><div class="ti-icon">✨</div>Create</div>
+      <div class="ti on"><div class="ti-icon">🗓️</div>Calendar</div>
+    </div>
+  </div>
+</div>
+
+<!-- Phone 2: Entry Sheet + Optimal Timing stacked -->
+<div style="display:flex;flex-direction:column;gap:24px;">
+  <div>
+    <p class="pl">Entry Sheet (bottom sheet)</p>
+    <div class="phone" style="min-height:520px;border-radius:30px;">
+      <div style="padding:0 20px 20px;background:white;border-radius:30px;height:100%">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">📝 New Video</div>
+
+        <div class="field-label">Title</div>
+        <input class="field-input" placeholder="e.g. BookTok haul video" value="The Midnight Library: 5 Books That Changed My Life"/>
+
+        <div class="field-label">Notes</div>
+        <textarea class="field-input" rows="2" style="resize:none">Film shelf scan with jump cuts, end with CTA</textarea>
+
+        <div class="field-label">Date & Time</div>
+        <input class="field-input" type="datetime-local" value="2026-04-08T18:00"/>
+        <div style="font-size:9px;color:#E91E8C;font-weight:600;margin-top:-8px;margin-bottom:12px">⭐ Suggested: Tue 6:00 PM (your best slot)</div>
+
+        <div class="field-label">Status</div>
+        <div class="status-row">
+          <div class="status-pill active-draft" onclick="selectStatus(this,'draft')">📝 Draft</div>
+          <div class="status-pill" onclick="selectStatus(this,'sched')">📅 Scheduled</div>
+          <div class="status-pill" onclick="selectStatus(this,'posted')">✅ Posted</div>
+        </div>
+
+        <button class="save-btn">Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p class="pl">Optimal Timing 🕐 New</p>
+    <div class="phone" style="min-height:420px;border-radius:30px;">
+      <div style="padding:16px 20px 20px;background:#FFF0F3;border-radius:30px;height:100%">
+        <div style="font-size:18px;font-weight:800;color:#C2185B;margin-bottom:4px">Best Times to Post 🕐</div>
+        <div style="font-size:11px;color:#aaa;margin-bottom:14px">Based on your past engagement patterns</div>
+
+        <!-- Heatmap -->
+        <div style="background:white;border-radius:16px;padding:12px;box-shadow:0 3px 10px rgba(255,182,193,.2);margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:#C2185B;margin-bottom:8px">Engagement Heatmap</div>
+          <div class="heatmap-grid" id="heatmapGrid"></div>
+        </div>
+
+        <!-- Best slots -->
+        <div style="font-size:11px;font-weight:700;color:#C2185B;margin-bottom:8px">Top 5 Slots This Week</div>
+        <div class="best-slot"><strong>Tue · 6:00 PM</strong><span>Predicted +18%</span></div>
+        <div class="best-slot"><strong>Thu · 7:00 PM</strong><span>Predicted +15%</span></div>
+        <div class="best-slot"><strong>Sat · 11:00 AM</strong><span>Predicted +13%</span></div>
+        <div class="best-slot"><strong>Wed · 6:00 PM</strong><span>Predicted +11%</span></div>
+        <div class="best-slot"><strong>Fri · 8:00 PM</strong><span>Predicted +10%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Label panel -->
+<div class="label-panel">
+  <h2>Calendar Tab 🗓️</h2>
+  <p>Tap any day to see its entries. Swipe ‹ › to change months. Tap + to add an entry.</p>
+  <div class="note">
+    <div class="note-title">Calendar Grid</div>
+    <p>7-column <code>LazyVGrid</code>. Each day cell shows colored dots:<br>
+    <span style="color:#E91E8C">●</span> <strong>Pink</strong> = Scheduled<br>
+    <span style="color:#009688">●</span> <strong>Mint</strong> = Posted<br>
+    <span style="color:#9C27B0">●</span> <strong>Lavender</strong> = Draft<br><br>
+    Today highlighted in hot pink. Tap a day to expand entries below.</p>
+  </div>
+  <div class="note">
+    <div class="note-title">Entry Sheet</div>
+    <p>Bottom sheet (<code>.sheet()</code>) with:<br>
+    • Pre-filled title when coming from "Schedule This" in Create<br>
+    • <strong>Suggested time</strong> hint pulls from optimal timing data<br>
+    • Draft / Scheduled / Posted status picker<br>
+    • Save creates the entry and the dot appears instantly on the grid</p>
+  </div>
+  <div class="note">
+    <div class="note-title">Optimal Timing</div>
+    <p>Day × hour heatmap — pink intensity = predicted engagement. Derived from your 6-month performance snapshot history. Top 5 recommended slots listed below.</p>
+  </div>
+</div>
+
+<script>
+  // Calendar state
+  let currentMonth = 3; // April (0-indexed)
+  let currentYear = 2026;
+  let selectedDay = 4; // today
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // Seeded entries
+  const entries = {
+    3: [{ title:'BookTok Haul', time:'6:00 PM', status:'scheduled', color:'#E91E8C' }],
+    8: [{ title:'Midnight Library Video', time:'6:00 PM', status:'scheduled', color:'#E91E8C' },
+        { title:'Cozy Reading Vlog', time:'3:00 PM', status:'draft', color:'#9C27B0' }],
+    12: [{ title:'5 Books Rec', time:'7:00 PM', status:'posted', color:'#009688' }],
+    15: [{ title:'Hot Takes Video', time:'8:00 PM', status:'scheduled', color:'#E91E8C' }],
+    19: [{ title:'Reading Aesthetic', time:'6:00 PM', status:'draft', color:'#9C27B0' }],
+    22: [{ title:'Author Interview Reaction', time:'5:00 PM', status:'posted', color:'#009688' }],
+  };
+
+  function buildCalendar() {
+    document.getElementById('monthLabel').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day' + (d === 4 ? ' today' : '') + (d === selectedDay && d !== 4 ? ' selected' : '');
+      el.innerHTML = `<span class="day-num">${d}</span>`;
+
+      if (entries[d]) {
+        const dots = document.createElement('div');
+        dots.className = 'day-dots';
+        entries[d].forEach(e => {
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          dot.style.background = e.color;
+          dots.appendChild(dot);
+        });
+        el.appendChild(dots);
+      }
+
+      el.onclick = () => selectDay(d);
+      grid.appendChild(el);
+    }
+
+    renderEntries(selectedDay);
+  }
+
+  function selectDay(d) {
+    selectedDay = d;
+    buildCalendar();
+  }
+
+  function renderEntries(d) {
+    const container = document.getElementById('dayEntries');
+    const dayEntries = entries[d];
+    if (!dayEntries || dayEntries.length === 0) {
+      container.innerHTML = `<p style="font-size:12px;color:#aaa;text-align:center;padding:16px 0">No videos scheduled for ${monthNames[currentMonth]} ${d}</p>`;
+      return;
+    }
+    container.innerHTML = `<p class="selected-day-label">${monthNames[currentMonth]} ${d}</p>`;
+    dayEntries.forEach(e => {
+      const statusColors = { scheduled:'#E91E8C', draft:'#9C27B0', posted:'#009688' };
+      const statusBg = { scheduled:'#FCE4EC', draft:'#EDE7F6', posted:'#E8F5E9' };
+      const statusLabel = { scheduled:'📅 Scheduled', draft:'📝 Draft', posted:'✅ Posted' };
+      container.innerHTML += `
+        <div class="entry-card">
+          <div class="entry-color-bar" style="background:${e.color}"></div>
+          <div class="entry-info">
+            <div class="entry-title">${e.title}</div>
+            <div class="entry-time">🕐 ${e.time}</div>
+          </div>
+          <span class="entry-status" style="background:${statusBg[e.status]};color:${statusColors[e.status]}">${statusLabel[e.status]}</span>
+        </div>`;
+    });
+  }
+
+  function changeMonth(dir) {
+    currentMonth += dir;
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+    selectedDay = 1;
+    buildCalendar();
+  }
+
+  function selectStatus(el, type) {
+    document.querySelectorAll('.status-pill').forEach(p => p.className = 'status-pill');
+    el.classList.add(`active-${type}`);
+  }
+
+  // Heatmap
+  function buildHeatmap() {
+    const grid = document.getElementById('heatmapGrid');
+    const days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+    const hours = ['6am','12pm','6pm','10pm'];
+    const hourIndices = [6, 12, 18, 22];
+
+    // Day headers
+    const blank = document.createElement('div');
+    grid.appendChild(blank);
+    days.forEach(d => {
+      const h = document.createElement('div');
+      h.className = 'hm-col-header';
+      h.textContent = d;
+      grid.appendChild(h);
+    });
+
+    // Rows
+    hours.forEach((label, ri) => {
+      const lbl = document.createElement('div');
+      lbl.className = 'hm-label';
+      lbl.textContent = label;
+      grid.appendChild(lbl);
+
+      // Engagement pattern: Tu/Th evenings are hottest
+      const pattern = [
+        [0.1,0.1,0.1,0.1,0.1,0.2,0.15],   // 6am
+        [0.2,0.3,0.25,0.3,0.25,0.2,0.35],  // 12pm
+        [0.3,0.7,0.9,0.65,0.85,0.6,0.5],   // 6pm
+        [0.2,0.4,0.5,0.45,0.55,0.7,0.3],   // 10pm
+      ];
+
+      days.forEach((_, ci) => {
+        const cell = document.createElement('div');
+        cell.className = 'hm-cell';
+        const val = pattern[ri][ci];
+        const r = Math.round(233 + (255-233)*(1-val));
+        const g = Math.round(30 + (240-30)*(1-val));
+        const b = Math.round(140 + (243-140)*(1-val));
+        cell.style.background = val > 0.7
+          ? `#E91E8C`
+          : val > 0.4
+          ? `#FFB6C1`
+          : `#FFF0F3`;
+        cell.style.opacity = 0.3 + val * 0.7;
+        grid.appendChild(cell);
+      });
+    });
+  }
+
+  buildCalendar();
+  buildHeatmap();
+</script>
+</body>
+</html>

@@ -47,6 +47,12 @@ class TrendsController {
             @RequestParam(defaultValue = "10") int limit) {
         return ResponseEntity.ok(trendService.getTopTrends(type, limit));
     }
+
+    /** Hashtags trending within a given content category (e.g. "Entertainment"). */
+    @GetMapping("/categories/{category}/hashtags")
+    public ResponseEntity<List<TrendResponse>> getCategoryHashtags(@PathVariable String category) {
+        return ResponseEntity.ok(trendService.getHashtagsForCategory(category));
+    }
 }
 
 // ─── Performance Analytics Controller ────────────────────────────────────────
@@ -67,6 +73,46 @@ class PerformanceAnalyticsController {
             @AuthenticationPrincipal UserDetails userDetails) {
         UUID userId = BaseController.extractUserId(userDetails);
         return ResponseEntity.ok(analyticsService.getPerformanceComparison(userId));
+    }
+
+    /**
+     * AI explanation of why the user's top videos performed.
+     * Demo-mode returns canned data; in prod this would call Claude with real video data.
+     */
+    @RequestMapping(value = "/video-analysis", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<VideoAnalysisResponse> getVideoAnalysis(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(buildDemoVideoAnalysis());
+    }
+
+    private static VideoAnalysisResponse buildDemoVideoAnalysis() {
+        return VideoAnalysisResponse.builder()
+            .id(UUID.randomUUID())
+            .analyzedAt(java.time.LocalDateTime.now())
+            .topVideos(java.util.List.of(
+                VideoAnalysisResponse.VideoSummary.builder()
+                    .videoId("demo-1").title("POV: Monday morning").viewCount(842_000L)
+                    .engagementRate(0.187).thumbnailUrl(null).build(),
+                VideoAnalysisResponse.VideoSummary.builder()
+                    .videoId("demo-2").title("3 hacks for GRWM").viewCount(615_000L)
+                    .engagementRate(0.162).thumbnailUrl(null).build(),
+                VideoAnalysisResponse.VideoSummary.builder()
+                    .videoId("demo-3").title("Storytime: my worst flight").viewCount(489_000L)
+                    .engagementRate(0.155).thumbnailUrl(null).build()
+            ))
+            .analysis(
+                "**Your top videos all share three things in common:**\n\n" +
+                "1. They open with a *strong hook* in the first 1.5 seconds — usually a question or visual disruption.\n" +
+                "2. They use **trending sounds** within 48 hours of those sounds breaking.\n" +
+                "3. The captions are short (under 12 words) and end with a CTA like \"watch till the end\".\n\n" +
+                "Your engagement rate (16.5% avg) is **65% above** your niche benchmark.")
+            .keyTakeaways(java.util.List.of(
+                "Hook in first 1.5s — open with a question or visual disruption",
+                "Jump on trending sounds within 48 hours",
+                "Keep captions under 12 words with a clear CTA",
+                "Post Tue/Thu 6–8 PM for your audience"
+            ))
+            .build();
     }
 }
 

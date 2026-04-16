@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trends Screen — Kawaii Bento</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "SF Pro Rounded", "Helvetica Neue", sans-serif;
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 32px;
+      padding: 40px 24px;
+      flex-wrap: wrap;
+      min-height: 100vh;
+    }
+
+    /* ── PHONE SHELL ── */
+    .phone {
+      width: 390px;
+      min-height: 844px;
+      background: #FFF0F3;
+      border-radius: 50px;
+      box-shadow:
+        0 0 0 10px #1a1a1a,
+        0 0 0 12px #333,
+        0 30px 80px rgba(0,0,0,0.45);
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 54px;
+      background: #FFF0F3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+    }
+    .status-bar .time { font-weight: 700; font-size: 15px; }
+    .status-bar .icons { display: flex; gap: 5px; align-items: center; }
+    .status-bar .icons span { font-size: 13px; }
+
+    /* Dynamic island */
+    .dynamic-island {
+      width: 120px; height: 34px;
+      background: #1a1a1a;
+      border-radius: 20px;
+      margin: 0 auto;
+      position: absolute;
+      top: 12px; left: 50%; transform: translateX(-50%);
+    }
+
+    /* Nav bar */
+    .nav-bar {
+      padding: 8px 20px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #C2185B;
+      letter-spacing: -0.5px;
+    }
+    .nav-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFB6C1, #E91E8C);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 14px; font-weight: 700;
+    }
+
+    /* Segmented control */
+    .seg-wrap {
+      padding: 0 16px 12px;
+    }
+    .seg {
+      background: white;
+      border-radius: 12px;
+      padding: 4px;
+      display: flex;
+      gap: 2px;
+      box-shadow: 0 2px 8px rgba(255,182,193,0.2);
+    }
+    .seg-item {
+      flex: 1;
+      padding: 8px 4px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #999;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .seg-item.active {
+      background: #E91E8C;
+      color: white;
+      box-shadow: 0 2px 8px rgba(233,30,140,0.3);
+    }
+
+    /* Scroll area */
+    .scroll-area {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      max-height: 640px;
+    }
+
+    /* Bento grid row */
+    .bento-row {
+      display: grid;
+      gap: 10px;
+    }
+    .bento-row.one   { grid-template-columns: 1fr; }
+    .bento-row.two   { grid-template-columns: 1fr 1fr; }
+    .bento-row.wide-narrow { grid-template-columns: 1.5fr 1fr; }
+
+    /* Trend Card */
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(255,182,193,0.3);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(233,30,140,0.2);
+    }
+    .card:active { transform: scale(0.98); }
+
+    .card-inner { padding: 14px; }
+
+    /* Type badge */
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 100px;
+      margin-bottom: 8px;
+    }
+    .badge-hashtag  { background: #FCE4EC; color: #E91E8C; }
+    .badge-music    { background: #EDE7F6; color: #7B1FA2; }
+    .badge-category { background: #E0F2F1; color: #00796B; }
+
+    .keyword {
+      font-size: 17px;
+      font-weight: 800;
+      color: #222;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .keyword.small { font-size: 14px; }
+
+    /* Velocity bar */
+    .velocity-wrap { margin-bottom: 8px; }
+    .velocity-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .velocity-label span { font-size: 10px; color: #aaa; font-weight: 500; }
+    .velocity-label strong { font-size: 10px; color: #E91E8C; font-weight: 700; }
+    .velocity-track {
+      height: 5px;
+      background: #FFF0F3;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .velocity-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #FFB6C1, #E91E8C);
+      transition: width 0.6s ease;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: 10px;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      color: #888;
+      font-weight: 500;
+    }
+    .stat-icon { font-size: 11px; }
+
+    /* Flames */
+    .flames { font-size: 12px; margin-bottom: 6px; }
+
+    /* Music play button */
+    .play-btn {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 32px; height: 32px;
+      background: #E91E8C;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(233,30,140,0.4);
+      transition: transform 0.15s;
+    }
+    .play-btn:hover { transform: scale(1.1); }
+    .play-btn.playing { background: #7B1FA2; }
+
+    /* Music cover */
+    .music-cover {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #E1BEE7, #7B1FA2);
+      margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+
+    /* Wide card special layout */
+    .card.featured .card-inner {
+      padding: 16px;
+    }
+    .card.featured .keyword { font-size: 20px; }
+
+    /* Trending indicator */
+    .trending-tag {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: #E91E8C;
+      color: white;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+
+    /* Section header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0 2px;
+    }
+    .section-header h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #C2185B;
+    }
+    .section-header a {
+      font-size: 11px;
+      color: #E91E8C;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* Tab bar */
+    .tab-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      border-top: 1px solid #FFE4EC;
+      display: flex;
+      padding: 10px 0 24px;
+    }
+    .tab-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #ccc;
+      cursor: pointer;
+    }
+    .tab-item.active { color: #E91E8C; }
+    .tab-icon { font-size: 22px; }
+
+    /* ── LABEL PANEL ── */
+    .label-panel {
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 60px;
+    }
+    .label-panel h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #C2185B;
+    }
+    .label-panel p {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.6;
+    }
+    .note {
+      background: white;
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: 0 2px 12px rgba(255,182,193,0.2);
+    }
+    .note-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #E91E8C;
+      margin-bottom: 6px;
+    }
+    .note p { font-size: 12px; color: #666; line-height: 1.6; }
+
+    .color-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Phone 1: "All" tab selected -->
+  <div>
+    <p style="text-align:center; font-size:12px; font-weight:700; color:#888; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">All Trends</p>
+    <div class="phone">
+      <div class="dynamic-island"></div>
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+
+      <div class="nav-bar">
+        <div class="nav-title">Trends ✨</div>
+        <div class="nav-avatar">K</div>
+      </div>
+
+      <div class="seg-wrap">
+        <div class="seg">
+          <div class="seg-item active" onclick="switchTab(this,'all')">All</div>
+          <div class="seg-item" onclick="switchTab(this,'hashtag')"># Hashtag</div>
+          <div class="seg-item" onclick="switchTab(this,'music')">♪ Music</div>
+          <div class="seg-item" onclick="switchTab(this,'cat')">⊞ Category</div>
+        </div>
+      </div>
+
+      <div class="scroll-area" id="trendsFeed">
+
+        <!-- Wide featured card -->
+        <div class="bento-row one">
+          <div class="card featured">
+            <div class="card-inner">
+              <span class="trending-tag">🔥 #1 Trending</span>
+              <div class="type-badge badge-hashtag">⊞ Hashtag</div>
+              <div class="keyword">#BookTok</div>
+              <div class="velocity-wrap">
+                <div class="velocity-label">
+                  <span>Velocity</span>
+                  <strong>+94%</strong>
+                </div>
+                <div class="velocity-track"><div class="velocity-fill" style="width:94%"></div></div>
+              </div>
+              <div class="stats-row">
+                <div class="stat"><span class="stat-icon">👁️</span> 48.2M views</div>
+                <div class="stat"><span class="stat-icon">💬</span> 6.1% eng.</div>
+                <div class="stat"><span>🔥🔥🔥</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two narrow cards -->
+        <div class="bento-row two">
+          <div class="card">
+            <div class="card-inner">
+              <div class="type-badge badge-music">♪ Music</div>
+              <div class="music-cover">🎵</div>
+              <div class="keyword small">Espresso<br><span style="font-weight:500; color:#888; font-size:12px">Sabrina Carpenter</span></div>
+              <div class="stats-row" style="margin-top:6px">
+                <div class="stat"><span>🔥🔥🔥</span></div>
+              </div>
+            </div>
+            <div class="play-btn" onclick="togglePlay(this)">▶</div>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="type-badge badge-hashtag"># Hashtag</div>
+              <div class="keyword small">#GymTok</div>
+              <div class="velocity-wrap">
+                <div class="velocity-label"><span>Velocity</span><strong>+71%</strong></div>
+                <div class="velocity-track"><div class="velocity-fill" style="width:71%"></div></div>
+              </div>
+              <div class="stats-row">
+                <div class="stat"><span>🔥🔥</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wide-narrow row -->
+        <div class="bento-row wide-narrow">
+          <div class="card">
+            <div class="card-inner">
+              <div class="type-badge badge-category">⊞ Category</div>
+              <div class="keyword small">Dance Challenges</div>
+              <div class="velocity-wrap">
+                <div class="velocity-label"><span>Velocity</span><strong>+83%</strong></div>
+                <div class="velocity-track"><div class="velocity-fill" style="width:83%"></div></div>
+              </div>
+              <div class="stats-row">
+                <div class="stat"><span class="stat-icon">👁️</span> 31.4M</div>
+                <div class="stat"><span>🔥🔥🔥</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="type-badge badge-hashtag"># Hashtag</div>
+              <div class="keyword small">#CleanEating</div>
+              <div class="stats-row" style="margin-top:6px">
+                <div class="stat"><span>🔥🔥</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two narrow cards -->
+        <div class="bento-row two">
+          <div class="card">
+            <div class="card-inner">
+              <div class="type-badge badge-music">♪ Music</div>
+              <div class="music-cover">🎸</div>
+              <div class="keyword small">APT.<br><span style="font-weight:500; color:#888; font-size:12px">ROSÉ & Bruno Mars</span></div>
+            </div>
+            <div class="play-btn" onclick="togglePlay(this)">▶</div>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="type-badge badge-hashtag"># Hashtag</div>
+              <div class="keyword small">#MakeupTutorial</div>
+              <div class="velocity-wrap">
+                <div class="velocity-label"><span>Velocity</span><strong>+58%</strong></div>
+                <div class="velocity-track"><div class="velocity-fill" style="width:58%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- spacer for tab bar -->
+        <div style="height: 80px"></div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab-item active"><div class="tab-icon">📈</div>Trends</div>
+        <div class="tab-item"><div class="tab-icon">📊</div>Analytics</div>
+        <div class="tab-item"><div class="tab-icon">✨</div>Create</div>
+        <div class="tab-item"><div class="tab-icon">🗓️</div>Calendar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone 2: Trend Detail -->
+  <div>
+    <p style="text-align:center; font-size:12px; font-weight:700; color:#888; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">Trend Detail</p>
+    <div class="phone">
+      <div class="dynamic-island"></div>
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+      </div>
+
+      <div class="nav-bar" style="padding-bottom:0">
+        <div style="display:flex; align-items:center; gap:8px; color:#E91E8C; font-size:14px; font-weight:600; cursor:pointer;">
+          ← <span style="color:#E91E8C">Trends</span>
+        </div>
+      </div>
+
+      <div class="scroll-area" style="max-height:700px; padding-top:8px">
+
+        <!-- Hero -->
+        <div style="background:white; border-radius:20px; padding:20px; box-shadow:0 4px 14px rgba(255,182,193,.3)">
+          <div class="type-badge badge-hashtag" style="font-size:11px; padding:4px 12px">⊞ Hashtag</div>
+          <div style="font-size:36px; font-weight:900; color:#222; letter-spacing:-1px; margin:8px 0 4px">#BookTok</div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px">
+            <span style="background:#FCE4EC; color:#E91E8C; font-size:10px; font-weight:700; padding:3px 10px; border-radius:100px">🔥 #1 Trending</span>
+            <span style="background:#FFF0F3; color:#C2185B; font-size:10px; font-weight:600; padding:3px 10px; border-radius:100px">Detected 2 days ago</span>
+          </div>
+          <!-- Stats grid -->
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+            <div style="background:#FFF0F3; border-radius:12px; padding:10px; text-align:center">
+              <div style="font-size:16px; font-weight:800; color:#E91E8C">+94%</div>
+              <div style="font-size:9px; color:#aaa; font-weight:600; margin-top:2px">Velocity</div>
+            </div>
+            <div style="background:#FFF0F3; border-radius:12px; padding:10px; text-align:center">
+              <div style="font-size:16px; font-weight:800; color:#E91E8C">6.1%</div>
+              <div style="font-size:9px; color:#aaa; font-weight:600; margin-top:2px">Engagement</div>
+            </div>
+            <div style="background:#FFF0F3; border-radius:12px; padding:10px; text-align:center">
+              <div style="font-size:16px; font-weight:800; color:#E91E8C">48M</div>
+              <div style="font-size:9px; color:#aaa; font-weight:600; margin-top:2px">Avg Views</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top TikToks -->
+        <div>
+          <div class="section-header">
+            <h3>🎬 Top TikToks</h3>
+            <a href="#">See all →</a>
+          </div>
+          <div style="display:flex; gap:10px; overflow-x:auto; padding:4px 0 8px; scrollbar-width:none;">
+            <!-- Video thumb cards -->
+            <div style="flex-shrink:0; width:110px; background:white; border-radius:16px; box-shadow:0 3px 10px rgba(255,182,193,.3); overflow:hidden; cursor:pointer">
+              <div style="height:140px; background:linear-gradient(160deg,#FFB6C1,#E91E8C); position:relative; display:flex; align-items:center; justify-content:center; font-size:32px">📚
+                <div style="position:absolute; top:6px; right:6px; background:rgba(0,0,0,.5); color:white; font-size:9px; font-weight:700; padding:2px 6px; border-radius:6px">2.4M 👁️</div>
+              </div>
+              <div style="padding:7px 8px">
+                <div style="font-size:9px; font-weight:700; color:#333; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">@bookworm_reads</div>
+                <div style="font-size:8px; color:#aaa; margin-top:1px">❤️ 180K</div>
+              </div>
+            </div>
+            <div style="flex-shrink:0; width:110px; background:white; border-radius:16px; box-shadow:0 3px 10px rgba(255,182,193,.3); overflow:hidden; cursor:pointer">
+              <div style="height:140px; background:linear-gradient(160deg,#C2185B,#7B1FA2); position:relative; display:flex; align-items:center; justify-content:center; font-size:32px">✨
+                <div style="position:absolute; top:6px; right:6px; background:rgba(0,0,0,.5); color:white; font-size:9px; font-weight:700; padding:2px 6px; border-radius:6px">1.8M 👁️</div>
+              </div>
+              <div style="padding:7px 8px">
+                <div style="font-size:9px; font-weight:700; color:#333; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">@readingwithamy</div>
+                <div style="font-size:8px; color:#aaa; margin-top:1px">❤️ 142K</div>
+              </div>
+            </div>
+            <div style="flex-shrink:0; width:110px; background:white; border-radius:16px; box-shadow:0 3px 10px rgba(255,182,193,.3); overflow:hidden; cursor:pointer">
+              <div style="height:140px; background:linear-gradient(160deg,#FFB6C1,#C2185B); position:relative; display:flex; align-items:center; justify-content:center; font-size:32px">📖
+                <div style="position:absolute; top:6px; right:6px; background:rgba(0,0,0,.5); color:white; font-size:9px; font-weight:700; padding:2px 6px; border-radius:6px">1.1M 👁️</div>
+              </div>
+              <div style="padding:7px 8px">
+                <div style="font-size:9px; font-weight:700; color:#333; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">@litclub.tiktok</div>
+                <div style="font-size:8px; color:#aaa; margin-top:1px">❤️ 98K</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Velocity chart -->
+        <div style="background:white; border-radius:20px; padding:16px; box-shadow:0 4px 14px rgba(255,182,193,.25)">
+          <div style="font-size:13px; font-weight:700; color:#C2185B; margin-bottom:10px">📈 7-Day Velocity</div>
+          <div style="height:60px; position:relative; overflow:hidden;">
+            <svg viewBox="0 0 340 60" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%">
+              <defs>
+                <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#E91E8C" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#E91E8C" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,50 C40,45 70,40 100,35 S160,20 200,18 S260,10 300,6 L340,4 L340,60 L0,60 Z" fill="url(#g)"/>
+              <path d="M0,50 C40,45 70,40 100,35 S160,20 200,18 S260,10 300,6 L340,4" fill="none" stroke="#E91E8C" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div style="background:#E91E8C; border-radius:20px; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; box-shadow:0 6px 20px rgba(233,30,140,.35)">
+          <div>
+            <div style="color:white; font-size:14px; font-weight:800">Create with this trend</div>
+            <div style="color:rgba(255,255,255,.75); font-size:11px; margin-top:2px">Get an AI video concept →</div>
+          </div>
+          <div style="font-size:28px">✨</div>
+        </div>
+
+        <div style="height:80px"></div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab-item active"><div class="tab-icon">📈</div>Trends</div>
+        <div class="tab-item"><div class="tab-icon">📊</div>Analytics</div>
+        <div class="tab-item"><div class="tab-icon">✨</div>Create</div>
+        <div class="tab-item"><div class="tab-icon">🗓️</div>Calendar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Label panel -->
+  <div class="label-panel">
+    <h2>Trends Tab 📈</h2>
+    <p>Phase 3 screen — tap any card or segment in the left phone to interact.</p>
+
+    <div class="note">
+      <div class="note-title">Bento Grid Layout</div>
+      <p>Cards alternate between:<br>
+      • <strong>1 wide featured card</strong> (full width, for #1 trend)<br>
+      • <strong>2 equal narrow cards</strong><br>
+      • <strong>1 wide + 1 narrow</strong><br>
+      Keeps the grid feeling playful and asymmetric.</p>
+    </div>
+
+    <div class="note">
+      <div class="note-title">Card Types</div>
+      <p>
+        <span class="color-dot" style="background:#FCE4EC; border:1.5px solid #E91E8C"></span><strong>Hashtag</strong> — keyword + velocity bar + flame rating<br><br>
+        <span class="color-dot" style="background:#EDE7F6; border:1.5px solid #7B1FA2"></span><strong>Music</strong> — cover art + artist + ▶ play button (AVPlayer)<br><br>
+        <span class="color-dot" style="background:#E0F2F1; border:1.5px solid #00796B"></span><strong>Category</strong> — category name + velocity + view count
+      </p>
+    </div>
+
+    <div class="note">
+      <div class="note-title">Trend Detail (right phone)</div>
+      <p>Pushed on card tap:<br>
+      • Big keyword hero + stat tiles<br>
+      • <strong>Top TikToks carousel</strong> (horizontal scroll, taps open TikTok)<br>
+      • 7-day velocity sparkline<br>
+      • Hot pink "Create with this trend" CTA</p>
+    </div>
+
+    <div class="note">
+      <div class="note-title">Interactions</div>
+      <p>
+      • Pull-to-refresh updates trends<br>
+      • Tap ▶ on music cards → inline AVPlayer preview<br>
+      • Tap any card → push Trend Detail<br>
+      • Tap "Create with trend" → switch to Create tab
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(el, tab) {
+      el.closest('.seg').querySelectorAll('.seg-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function togglePlay(btn) {
+      const isPlaying = btn.classList.contains('playing');
+      // stop all
+      document.querySelectorAll('.play-btn').forEach(b => {
+        b.classList.remove('playing');
+        b.textContent = '▶';
+      });
+      if (!isPlaying) {
+        btn.classList.add('playing');
+        btn.textContent = '⏸';
+      }
+    }
+  </script>
+</body>
+</html>

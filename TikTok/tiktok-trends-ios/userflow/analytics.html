@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics Screen — Kawaii Bento</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "SF Pro Rounded", "Helvetica Neue", sans-serif;
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 32px;
+      padding: 40px 24px;
+      flex-wrap: wrap;
+      min-height: 100vh;
+    }
+
+    .phone {
+      width: 390px;
+      min-height: 844px;
+      background: #FFF0F3;
+      border-radius: 50px;
+      box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #333, 0 30px 80px rgba(0,0,0,0.45);
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .dynamic-island {
+      width: 120px; height: 34px;
+      background: #1a1a1a; border-radius: 20px;
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    }
+    .status-bar {
+      height: 54px; background: #FFF0F3;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 28px 0;
+      font-size: 13px; font-weight: 600; color: #333;
+    }
+    .status-bar .time { font-weight: 700; font-size: 15px; }
+    .nav-bar { padding: 8px 20px 4px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-title { font-size: 28px; font-weight: 800; color: #C2185B; letter-spacing: -0.5px; }
+    .nav-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #FFB6C1, #E91E8C);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 14px; font-weight: 700;
+    }
+    .tab-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid #FFE4EC;
+      display: flex; padding: 10px 0 24px;
+    }
+    .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; font-weight: 500; color: #ccc; cursor: pointer; }
+    .tab-item.active { color: #E91E8C; }
+    .tab-icon { font-size: 22px; }
+    .scroll-area { padding: 0 16px; overflow-y: auto; max-height: 660px; }
+
+    /* ── KPI SCORE CARDS ── */
+    .kpi-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 4px 0 10px; scrollbar-width: none; margin-bottom: 4px; }
+    .kpi-card {
+      flex-shrink: 0; width: 100px;
+      background: white; border-radius: 18px;
+      box-shadow: 0 4px 14px rgba(255,182,193,.3);
+      padding: 14px 10px; text-align: center;
+      cursor: pointer; transition: transform .18s, box-shadow .18s;
+      border: 2px solid transparent;
+    }
+    .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(233,30,140,.2); }
+    .kpi-card.active { border-color: #E91E8C; }
+    .kpi-grade {
+      font-size: 34px; font-weight: 900; line-height: 1; margin-bottom: 6px;
+    }
+    .kpi-label { font-size: 9px; font-weight: 600; color: #aaa; line-height: 1.3; }
+    .kpi-value { font-size: 12px; font-weight: 700; color: #444; margin-top: 4px; }
+
+    /* ── CHART ── */
+    .chart-card {
+      background: white; border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(255,182,193,.25);
+      padding: 16px; margin-bottom: 10px;
+    }
+    .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .chart-title { font-size: 14px; font-weight: 700; color: #C2185B; }
+    .toggle-btn {
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 100px; border: none; cursor: pointer;
+      background: #FCE4EC; color: #E91E8C; transition: all .2s;
+    }
+    .toggle-btn.on { background: #E91E8C; color: white; }
+    .chart-area { position: relative; height: 120px; }
+    svg.chart { width: 100%; height: 100%; }
+    .legend-row { display: flex; gap: 14px; margin-top: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; color: #888; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ── OVERALL GRADE ── */
+    .overall-card {
+      background: linear-gradient(135deg, #FCE4EC, #FFF0F3);
+      border-radius: 20px; padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px; margin-bottom: 10px;
+      border: 2px solid #FFB6C1;
+    }
+    .overall-grade-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #E91E8C, #C2185B);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 30px; font-weight: 900;
+      box-shadow: 0 6px 16px rgba(233,30,140,.4); flex-shrink: 0;
+    }
+    .overall-text h3 { font-size: 16px; font-weight: 800; color: #C2185B; }
+    .overall-text p { font-size: 11px; color: #888; margin-top: 3px; line-height: 1.5; }
+
+    /* ── AI BUTTON ── */
+    .ai-btn {
+      width: 100%; background: linear-gradient(135deg, #7B1FA2, #E91E8C);
+      border: none; border-radius: 18px; padding: 16px;
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(123,31,162,.35); margin-bottom: 10px;
+      transition: transform .15s;
+    }
+    .ai-btn:hover { transform: scale(1.02); }
+    .ai-btn-icon { font-size: 28px; }
+    .ai-btn-text { text-align: left; }
+    .ai-btn-text strong { display: block; color: white; font-size: 14px; font-weight: 800; }
+    .ai-btn-text span { color: rgba(255,255,255,.75); font-size: 11px; }
+
+    /* ── AI ANALYSIS SCREEN ── */
+    .analysis-card {
+      background: white; border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(255,182,193,.25); padding: 16px; margin-bottom: 10px;
+    }
+    .video-row { display: flex; gap: 8px; margin: 10px 0; }
+    .video-mini {
+      flex: 1; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(255,182,193,.3);
+    }
+    .video-mini-thumb {
+      height: 68px; display: flex; align-items: center; justify-content: center; font-size: 20px;
+      position: relative;
+    }
+    .video-mini-info { padding: 5px 7px; background: white; }
+    .video-mini-info div { font-size: 8px; color: #888; }
+    .video-mini-info strong { font-size: 10px; font-weight: 700; color: #333; }
+    .analysis-text { font-size: 11px; color: #555; line-height: 1.7; }
+    .takeaway {
+      display: flex; gap: 8px; align-items: flex-start;
+      background: #FFF0F3; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px;
+    }
+    .takeaway span { font-size: 14px; flex-shrink: 0; }
+    .takeaway p { font-size: 10px; color: #555; line-height: 1.5; font-weight: 500; }
+
+    /* Label panel */
+    .label-panel { width: 280px; display: flex; flex-direction: column; gap: 16px; padding-top: 60px; }
+    .label-panel h2 { font-size: 22px; font-weight: 800; color: #C2185B; }
+    .label-panel p { font-size: 13px; color: #888; line-height: 1.6; }
+    .note { background: white; border-radius: 16px; padding: 14px 16px; box-shadow: 0 2px 12px rgba(255,182,193,.2); }
+    .note-title { font-size: 12px; font-weight: 700; color: #E91E8C; margin-bottom: 6px; }
+    .note p { font-size: 12px; color: #666; line-height: 1.6; }
+    .phone-label { text-align:center; font-size:12px; font-weight:700; color:#888; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+  </style>
+</head>
+<body>
+
+  <!-- Phone 1: Analytics main -->
+  <div>
+    <p class="phone-label">Analytics Overview</p>
+    <div class="phone">
+      <div class="dynamic-island"></div>
+      <div class="status-bar"><span class="time">9:41</span><span>●●● WiFi 🔋</span></div>
+      <div class="nav-bar">
+        <div class="nav-title">Analytics 📊</div>
+        <div class="nav-avatar">K</div>
+      </div>
+
+      <div class="scroll-area">
+
+        <!-- KPI Grade Cards -->
+        <p style="font-size:11px; font-weight:700; color:#C2185B; margin-bottom:8px;">Your KPI Grades</p>
+        <div class="kpi-scroll">
+          <div class="kpi-card active" onclick="selectKpi(this,'Engagement Rate','6.1%')">
+            <div class="kpi-grade" style="color:#4CAF50">A</div>
+            <div class="kpi-label">Engagement Rate</div>
+            <div class="kpi-value">6.1%</div>
+          </div>
+          <div class="kpi-card" onclick="selectKpi(this,'View Velocity','B')">
+            <div class="kpi-grade" style="color:#2196F3">B</div>
+            <div class="kpi-label">View Velocity</div>
+            <div class="kpi-value">+43%</div>
+          </div>
+          <div class="kpi-card" onclick="selectKpi(this,'Follower Growth','C')">
+            <div class="kpi-grade" style="color:#FFC107">C</div>
+            <div class="kpi-label">Follower Growth</div>
+            <div class="kpi-value">+2.1%</div>
+          </div>
+          <div class="kpi-card" onclick="selectKpi(this,'Watch Time','B')">
+            <div class="kpi-grade" style="color:#2196F3">B</div>
+            <div class="kpi-label">Avg Watch Time</div>
+            <div class="kpi-value">63%</div>
+          </div>
+          <div class="kpi-card" onclick="selectKpi(this,'Share Rate','D')">
+            <div class="kpi-grade" style="color:#FF9800">D</div>
+            <div class="kpi-label">Share Rate</div>
+            <div class="kpi-value">0.8%</div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title" id="chartTitle">📈 Engagement Rate</span>
+            <button class="toggle-btn" id="benchmarkToggle" onclick="toggleBenchmark(this)">vs Benchmark</button>
+          </div>
+          <div class="chart-area">
+            <svg class="chart" viewBox="0 0 340 120" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="fillGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#E91E8C" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#E91E8C" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <!-- User line -->
+              <path d="M0,90 C30,82 60,70 100,55 S160,35 200,30 S270,22 340,15"
+                fill="none" stroke="#E91E8C" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,90 C30,82 60,70 100,55 S160,35 200,30 S270,22 340,15 L340,120 L0,120 Z"
+                fill="url(#fillGrad)"/>
+              <!-- Benchmark line (hidden by default) -->
+              <path id="benchmarkLine" d="M0,80 C60,78 120,75 180,72 S260,68 340,65"
+                fill="none" stroke="#ccc" stroke-width="1.5" stroke-dasharray="5,4" stroke-linecap="round"
+                opacity="0"/>
+              <!-- Data points -->
+              <circle cx="100" cy="55" r="4" fill="#E91E8C"/>
+              <circle cx="200" cy="30" r="4" fill="#E91E8C"/>
+              <circle cx="340" cy="15" r="4" fill="#E91E8C"/>
+              <!-- Tooltip -->
+              <rect x="178" y="10" width="56" height="18" rx="6" fill="#E91E8C"/>
+              <text x="206" y="23" font-size="9" fill="white" text-anchor="middle" font-weight="bold">6.1% ↑</text>
+            </svg>
+          </div>
+          <div class="legend-row">
+            <div class="legend-item"><div class="legend-dot" style="background:#E91E8C"></div> Your performance</div>
+            <div class="legend-item" id="benchmarkLegend" style="opacity:.3"><div class="legend-dot" style="background:#ccc; border:1px dashed #aaa"></div> Benchmark avg</div>
+          </div>
+        </div>
+
+        <!-- Overall grade -->
+        <div class="overall-card">
+          <div class="overall-grade-circle">B+</div>
+          <div class="overall-text">
+            <h3>Overall Grade</h3>
+            <p>You're above average on engagement & watch time. Focus on boosting share rate to reach an A.</p>
+          </div>
+        </div>
+
+        <!-- AI Analyze button -->
+        <button class="ai-btn" onclick="showAnalysis()">
+          <div class="ai-btn-icon">🧠</div>
+          <div class="ai-btn-text">
+            <strong>AI Analyze My Videos ✨</strong>
+            <span>Claude explains why your top videos performed well</span>
+          </div>
+        </button>
+
+        <div style="height:80px"></div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab-item"><div class="tab-icon">📈</div>Trends</div>
+        <div class="tab-item active"><div class="tab-icon">📊</div>Analytics</div>
+        <div class="tab-item"><div class="tab-icon">✨</div>Create</div>
+        <div class="tab-item"><div class="tab-icon">🗓️</div>Calendar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone 2: AI Video Analysis -->
+  <div>
+    <p class="phone-label">AI Video Analysis ✨ New</p>
+    <div class="phone">
+      <div class="dynamic-island"></div>
+      <div class="status-bar"><span class="time">9:41</span><span>●●● WiFi 🔋</span></div>
+      <div class="nav-bar" style="padding-bottom:0">
+        <div style="display:flex; align-items:center; gap:8px; color:#E91E8C; font-size:14px; font-weight:600; cursor:pointer;">
+          ← <span>Analytics</span>
+        </div>
+      </div>
+
+      <div class="scroll-area" style="max-height:700px; padding-top:10px">
+
+        <div style="margin-bottom:12px">
+          <h2 style="font-size:22px; font-weight:900; color:#222; letter-spacing:-0.5px">Why Your Videos<br>Perform 🌟</h2>
+          <p style="font-size:11px; color:#aaa; margin-top:4px">Claude analyzed your top 5 videos vs. current trends</p>
+        </div>
+
+        <!-- Top videos row -->
+        <div class="analysis-card" style="padding:14px">
+          <p style="font-size:12px; font-weight:700; color:#C2185B; margin-bottom:10px">🎬 Your Top 5 Videos</p>
+          <div class="video-row">
+            <div class="video-mini">
+              <div class="video-mini-thumb" style="background:linear-gradient(135deg,#FFB6C1,#E91E8C)">📚
+                <div style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.5);color:white;font-size:7px;padding:1px 4px;border-radius:4px">2.4M</div>
+              </div>
+              <div class="video-mini-info"><strong>BookTok Haul</strong><div>❤️ 180K · 8.2%</div></div>
+            </div>
+            <div class="video-mini">
+              <div class="video-mini-thumb" style="background:linear-gradient(135deg,#E1BEE7,#7B1FA2)">✨
+                <div style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.5);color:white;font-size:7px;padding:1px 4px;border-radius:4px">1.8M</div>
+              </div>
+              <div class="video-mini-info"><strong>Reading Vlog</strong><div>❤️ 142K · 7.1%</div></div>
+            </div>
+            <div class="video-mini">
+              <div class="video-mini-thumb" style="background:linear-gradient(135deg,#B2DFDB,#009688)">📖
+                <div style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.5);color:white;font-size:7px;padding:1px 4px;border-radius:4px">1.1M</div>
+              </div>
+              <div class="video-mini-info"><strong>5 Books Rec</strong><div>❤️ 98K · 6.4%</div></div>
+            </div>
+            <div class="video-mini">
+              <div class="video-mini-thumb" style="background:linear-gradient(135deg,#FFB6C1,#C2185B)">🌸
+                <div style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.5);color:white;font-size:7px;padding:1px 4px;border-radius:4px">890K</div>
+              </div>
+              <div class="video-mini-info"><strong>Cozy Reading</strong><div>❤️ 72K · 5.9%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Claude analysis -->
+        <div class="analysis-card">
+          <p style="font-size:12px; font-weight:700; color:#7B1FA2; margin-bottom:8px">🧠 Claude's Analysis</p>
+          <p class="analysis-text">Your <strong>#BookTok</strong> content consistently outperforms your average by <strong>3.2×</strong> — this aligns with the current <em>#BookTok velocity spike (+94%)</em> on the platform. Your "haul" and "recommendation" formats drive the highest save rates, suggesting viewers return to reference your picks.</p>
+        </div>
+
+        <!-- Key takeaways -->
+        <div>
+          <p style="font-size:12px; font-weight:700; color:#C2185B; margin-bottom:8px">💡 Key Takeaways</p>
+          <div class="takeaway">
+            <span>📚</span>
+            <p>Book haul + recommendation videos get <strong>3×</strong> more saves than vlogs</p>
+          </div>
+          <div class="takeaway">
+            <span>🕐</span>
+            <p>Videos posted <strong>Tue & Thu 6–8PM</strong> average 40% more views</p>
+          </div>
+          <div class="takeaway">
+            <span>🎵</span>
+            <p>Using trending sounds boosts reach by <strong>2.1×</strong> — try <em>Espresso</em> by Sabrina Carpenter</p>
+          </div>
+          <div class="takeaway">
+            <span>📈</span>
+            <p>Your share rate (0.8%) is below benchmark — add a clear <strong>"share this with a reader friend"</strong> CTA</p>
+          </div>
+        </div>
+
+        <div style="height:80px"></div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab-item"><div class="tab-icon">📈</div>Trends</div>
+        <div class="tab-item active"><div class="tab-icon">📊</div>Analytics</div>
+        <div class="tab-item"><div class="tab-icon">✨</div>Create</div>
+        <div class="tab-item"><div class="tab-icon">🗓️</div>Calendar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Label panel -->
+  <div class="label-panel">
+    <h2>Analytics Tab 📊</h2>
+    <p>Tap the KPI grade cards to switch the chart metric. Toggle "vs Benchmark" to overlay the platform average.</p>
+    <div class="note">
+      <div class="note-title">KPI Grade Cards</div>
+      <p>Horizontal scroll — one card per metric. Tap to make that metric active in the chart.<br><br>
+      <strong style="color:#4CAF50">A</strong> ≥ 120% of benchmark &nbsp;
+      <strong style="color:#2196F3">B</strong> ≥ 100% &nbsp;
+      <strong style="color:#FFC107">C</strong> ≥ 80% &nbsp;
+      <strong style="color:#FF9800">D</strong> ≥ 60% &nbsp;
+      <strong style="color:#F44336">F</strong> below</p>
+    </div>
+    <div class="note">
+      <div class="note-title">Line Chart</div>
+      <p>Swift Charts <code>LineMark</code> + <code>AreaMark</code>. Shows 6-month weekly data. Dashed gray line = benchmark when toggled on. Pink glow fill under user line.</p>
+    </div>
+    <div class="note">
+      <div class="note-title">Overall Grade circle</div>
+      <p>Average of all 5 KPI grades. Hot pink gradient circle — the most prominent element. Short plain-language tip below it.</p>
+    </div>
+    <div class="note">
+      <div class="note-title">AI Video Analysis (right phone)</div>
+      <p>Claude analyzes your top 5 videos against current trend data and explains <em>why</em> they performed well, with actionable takeaways. Cached 24hrs so it doesn't re-run every tap.</p>
+    </div>
+  </div>
+
+  <script>
+    function selectKpi(el, label) {
+      document.querySelectorAll('.kpi-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('chartTitle').textContent = '📈 ' + label;
+    }
+    let benchmarkOn = false;
+    function toggleBenchmark(btn) {
+      benchmarkOn = !benchmarkOn;
+      btn.classList.toggle('on', benchmarkOn);
+      document.getElementById('benchmarkLine').style.opacity = benchmarkOn ? '1' : '0';
+      document.getElementById('benchmarkLegend').style.opacity = benchmarkOn ? '1' : '.3';
+    }
+    function showAnalysis() {
+      alert('→ Pushes to AI Video Analysis screen (right phone shows the result)');
+    }
+  </script>
+</body>
+</html>
