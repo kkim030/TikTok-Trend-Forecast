@@ -2,7 +2,7 @@
 
 A full-stack app I built to help TikTok creators stop guessing what to post. It pulls live trend data from TikTok, compares your account stats against platform benchmarks, and uses Claude (Anthropic's AI) to suggest actual video ideas based on what's trending right now.
 
-![Landing Page](TikTok/docs/screenshots/landing.png)
+![iOS App Hero](TikTok/docs/screenshots/ios-hero.png)
 
 ---
 
@@ -10,15 +10,15 @@ A full-stack app I built to help TikTok creators stop guessing what to post. It 
 
 **Trending Now** — shows what's gaining traction on TikTok right now, broken into hashtags, music, and content categories. Each trend has a velocity score that measures week-over-week growth, so you can see not just what's popular but what's *accelerating*. No login needed to browse this.
 
-![Trends Dashboard](TikTok/docs/screenshots/trends.png)
+![Trends Tab](TikTok/docs/screenshots/ios-trends.png)
 
 **AI Video Concepts** — hit Generate and it takes the top trending hashtags, combines them with your niche, and sends it to Claude to generate a full video idea: title, what to film, which sound to use, and which hashtags to put in the caption.
 
-![AI Recommendations](TikTok/docs/screenshots/recommendations.png)
+![Create Tab](TikTok/docs/screenshots/ios-create.png)
 
 **Performance Analytics** — connects to your TikTok account and tracks your engagement rate, view velocity, follower growth, watch time, and share rate over the past 6 months. Plots them on a chart against platform averages so you can actually see how you're doing, and grades each metric A–F.
 
-![Performance Analytics](TikTok/docs/screenshots/analytics.png)
+![Analytics Tab](TikTok/docs/screenshots/ios-analytics.png)
 
 You sign in with your TikTok account (OAuth) so your real data gets pulled on login. There's also a demo mode if you just want to click around without connecting an account.
 
