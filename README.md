@@ -20,6 +20,12 @@ A full-stack app I built to help TikTok creators stop guessing what to post. It 
 
 ![Analytics Tab](TikTok/docs/screenshots/ios-analytics.png)
 
+**Content Calendar** — schedule the videos you want to film, see them on a month grid, and tap **Best Times** for a heatmap of when your audience is actually online based on your last 6 months of engagement.
+
+![Calendar Tab](TikTok/docs/screenshots/ios-calendar.png)
+
+![Best Times to Post](TikTok/docs/screenshots/ios-best-times.png)
+
 You sign in with your TikTok account (OAuth) so your real data gets pulled on login. There's also a demo mode if you just want to click around without connecting an account.
 
 ---
