@@ -8,16 +8,6 @@ A full-stack app I built to help TikTok creators stop guessing what to post. It 
 
 ---
 
-## ▶ Try the demo (no install)
-
-The iOS app runs in your browser via [Appetize.io](https://appetize.io) — no Xcode or iPhone needed.
-
-> **Live demo:** _link will appear here once deployed — see [Deploying the demo](#deploying-the-demo)_
-
-Tap **Try Demo** on the login screen to skip TikTok OAuth and explore with seeded data (20 trends, 25 weeks of analytics, 3 AI recommendations). Sessions are capped at 3 minutes by Appetize's free tier; first request after backend sleep takes ~25s while it cold-starts.
-
----
-
 ## What it does
 
 **Trending Now** — shows what's gaining traction on TikTok right now, broken into hashtags, music, and content categories. Each trend has a velocity score that measures week-over-week growth, so you can see not just what's popular but what's *accelerating*. No login needed to browse this.
